@@ -1,7 +1,7 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
-import 'package:spotted_flutter/enums/colors.dart';
+import 'package:spotted_flutter/enums/palette.dart';
 
 class BottomBarIcon extends StatefulWidget {
   const BottomBarIcon(
@@ -34,7 +34,7 @@ class _BottomBarIconState extends State<BottomBarIcon> {
                 height: 54,
                 width: 54,
                 decoration: BoxDecoration(
-                  color: Palette.white.color,
+                  color: Palette.white,
                   borderRadius: BorderRadius.circular(999),
                 ),
               ),
@@ -46,7 +46,7 @@ class _BottomBarIconState extends State<BottomBarIcon> {
                 widget.icon,
                 size: 28,
                 color:
-                    widget.active ? Palette.black.color : Palette.white.color,
+                    widget.active ? Palette.black : Palette.white,
               ),
               onPressed: () => widget.onTap?.call(),
             ),
