@@ -8,6 +8,7 @@ import 'package:spotted_flutter/view/main_page.dart';
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Palette.black,
+    systemNavigationBarColor: Palette.black
   ));
   runApp(const MyApp());
 }
