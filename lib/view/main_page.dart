@@ -49,11 +49,12 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ],
               ),
-              margin: const EdgeInsetsDirectional.fromSTEB(54, 0, 54, 30),
+              margin: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 30),
               child: Padding(
                 padding:
                 const EdgeInsets.symmetric(vertical: 8.0, horizontal: 11.0),
                 child: Row(
+                  mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     BottomBarIcon(

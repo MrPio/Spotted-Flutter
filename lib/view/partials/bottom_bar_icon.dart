@@ -23,16 +23,16 @@ class _BottomBarIconState extends State<BottomBarIcon> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 60,
-      width: 60,
+      height: 54,
+      width: 58,
       child: Stack(
         children: [
           Visibility(
             visible: widget.active,
             child: Center(
               child: Container(
-                height: 60,
-                width: 60,
+                height: 54,
+                width: 54,
                 decoration: BoxDecoration(
                   color: Palette.white.color,
                   borderRadius: BorderRadius.circular(999),
@@ -44,7 +44,7 @@ class _BottomBarIconState extends State<BottomBarIcon> {
             child: IconButton(
               icon: Icon(
                 widget.icon,
-                size: 30,
+                size: 28,
                 color:
                     widget.active ? Palette.black.color : Palette.white.color,
               ),
