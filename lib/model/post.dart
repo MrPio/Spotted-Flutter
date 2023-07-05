@@ -10,8 +10,8 @@ part 'post.g.dart';
 
 @JsonSerializable()
 class Post {
-    final String? authorUID;
-  final Locations? location;
+  final String? authorUID;
+  final Locations location;
   final Gender gender;
   final int timestamp;
   final String description;
@@ -34,7 +34,7 @@ class Post {
 
   Post({
     this.authorUID,
-    this.location,
+    Locations? location,
     Gender? gender,
     this.timestamp = 0,
     this.description = "",
@@ -48,7 +48,8 @@ class Post {
     this.uid,
     this.author,
     List<User?>? lastFollowers,
-  })  : gender=gender??Gender.FEMALE,
+  })  : location = location ?? Locations.ANCONA,
+        gender = gender ?? Gender.FEMALE,
         tags = tags ?? [],
         followers = followers ?? [],
         comments = comments ?? [],
@@ -58,7 +59,9 @@ class Post {
 
   int calculateRelevance(List<Tag> tags) {
     if (tags.isEmpty) return 0;
-    return tags.where((tag) => this.tags.contains(tag)).length * 100 ~/ tags.length;
+    return tags.where((tag) => this.tags.contains(tag)).length *
+        100 ~/
+        tags.length;
   }
 
   List<String> validate() {
@@ -67,7 +70,8 @@ class Post {
       errors.add("Il luogo del post deve essere specificato.");
     }
     if (description.length < 6 || description.length > 1000) {
-      errors.add("La descrizione deve essere presente e non più lunga di 1000 caratteri.");
+      errors.add(
+          "La descrizione deve essere presente e non più lunga di 1000 caratteri.");
     }
     if (tags.length < 3) {
       errors.add("Specifica almeno 3 tags");
@@ -75,5 +79,5 @@ class Post {
     return errors;
   }
 
-    factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
+  factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
 }

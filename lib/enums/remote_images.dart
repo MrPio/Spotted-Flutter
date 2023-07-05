@@ -100,7 +100,7 @@ enum RemoteImages {
 
   String get url =>
       "https://firebasestorage.googleapis.com/v0/b/spotted-f3589.appspot.com/o/src%2F"
-      "${_url ?? name.toLowerCase()}${name.contains("avatar") ? ".png" : ".jpg"}?alt=media";
+      "${_url ?? name.toLowerCase() + (name.contains("AVATAR") ? ".png" : ".jpg")}?alt=media";
 
   final String? _url;
 
