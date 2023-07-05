@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:spotted_flutter/view/first_page.dart';
 import '../../enums/palette.dart';
 import '../../enums/strings.dart';
+import 'login_fragment.dart';
 
 class FirstFragment extends StatefulWidget {
   const FirstFragment({super.key});
@@ -15,9 +18,10 @@ class _FirstFragmentState extends State<FirstFragment> {
     return Container(
         color: Colors.transparent,
         margin: const EdgeInsets.only(bottom: 60),
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
               introTitle,
@@ -35,13 +39,8 @@ class _FirstFragmentState extends State<FirstFragment> {
               ),
             ),
             const SizedBox(height: 48),
-            Stack(
-              alignment: Alignment.centerRight,
-              children: [
                 ElevatedButton(
-                  onPressed: () {
-                    // Azione da eseguire quando il pulsante viene premuto
-                  },
+                  onPressed: () {},
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Palette.red,
                     shape: RoundedRectangleBorder(
@@ -51,11 +50,13 @@ class _FirstFragmentState extends State<FirstFragment> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const [
-                      Text(
-                        start,
-                      textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
+                      Expanded(
+                        child: Text(
+                          start,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                       Icon(Icons.arrow_forward, color: Colors.white),
@@ -64,8 +65,6 @@ class _FirstFragmentState extends State<FirstFragment> {
                 ),
               ],
             ),
-          ],
-        ),
       );
   }
 }
