@@ -42,10 +42,10 @@ class User {
     List<String>? following,
     this.cellNumber,
     this.instagramNickname,
-  })  : avatar = avatar ?? RemoteImages.anonymous.url,
+  })  : avatar = avatar ?? RemoteImages.ANONYMOUS.url,
         regDateTimestamp =
             regDateTimestamp ?? DateTime.now().millisecondsSinceEpoch,
-        gender = gender ?? Gender.other,
+        gender = gender ?? Gender.OTHER,
         tags = tags ?? [],
         postsUIDs = postsUIDs ?? [],
         comments = comments ?? [],

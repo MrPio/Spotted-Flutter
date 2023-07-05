@@ -48,9 +48,9 @@ class _FirstFragmentState extends State<FirstFragment> {
                       borderRadius: BorderRadius.circular(999),
                     ),
                   ),
-                  child: const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: const [
                       Text(
                         start,
                       textAlign: TextAlign.center,

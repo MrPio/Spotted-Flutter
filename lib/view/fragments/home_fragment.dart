@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:spotted_flutter/enums/palette.dart';
+import 'package:spotted_flutter/enums/remote_images.dart';
+import 'package:spotted_flutter/managers/account_manager.dart';
 
 class HomeFragment extends StatefulWidget {
-  const HomeFragment({super.key});
+  const HomeFragment(this.changeIndexCallback, {super.key});
+
+  final Function(int) changeIndexCallback;
 
   @override
   State<HomeFragment> createState() => _HomeFragmentState();
@@ -22,10 +26,14 @@ class _HomeFragmentState extends State<HomeFragment> {
                 borderRadius:
                     const BorderRadius.vertical(bottom: Radius.circular(24))),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
+                  GestureDetector(
+                      onTap: () => widget.changeIndexCallback(3),
+
+                      child: IconButton(onPressed: () {}, icon: const Icon(Icons.menu))),
                   Expanded(
                     child: Text(
                       "Spotted",
@@ -36,7 +44,23 @@ class _HomeFragmentState extends State<HomeFragment> {
                           fontSize: 32),
                     ),
                   ),
-                  IconButton(onPressed: () {}, icon: const Icon(Icons.person)),
+                  GestureDetector(
+                    onTap: () => widget.changeIndexCallback(2),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Palette.scheme.background,
+                          width: 1.5,
+                        ),
+                      ),
+                      child: CircleAvatar(
+                        radius: 24,
+                        backgroundColor: Colors.transparent,
+                        backgroundImage: NetworkImage(RemoteImages.AVATAR.url),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -44,5 +68,11 @@ class _HomeFragmentState extends State<HomeFragment> {
         ],
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    var c=AccountManager().user;
   }
 }

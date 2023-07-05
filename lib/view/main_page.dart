@@ -17,22 +17,22 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int _currentIndex = 0;
 
-  final List<Widget> _pages = const [
-    HomeFragment(),
-    AddPostFragment(),
-    AccountFragment(),
-    SettingsFragment(),
-  ];
+  changeIndex(int index) => setState(() => _currentIndex = index);
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> pages = [
+      HomeFragment(changeIndex),
+      AddPostFragment(changeIndex),
+      AccountFragment(changeIndex),
+      SettingsFragment(changeIndex),
+    ];
     return Scaffold(
       body: SafeArea(
         child: Stack(
           children: [
-
             // Current fragment
-            _pages[_currentIndex],
+            pages[_currentIndex],
 
             // Navigation bar
             Align(
@@ -52,8 +52,8 @@ class _MainPageState extends State<MainPage> {
                 ),
                 margin: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 30),
                 child: Padding(
-                  padding:
-                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 11.0),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0, horizontal: 11.0),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -4,7 +4,10 @@ part 'tag.g.dart';
 
 @JsonSerializable()
 class Tag {
-  Tag();
+  final String name;
+  final String icon;
+
+  Tag({this.name = "", this.icon = ""});
 
   factory Tag.fromJson(Map<String, dynamic> json) => _$TagFromJson(json);
 }
