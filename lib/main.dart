@@ -1,17 +1,18 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:spotted_flutter/enums/palette.dart';
+import 'package:spotted_flutter/managers/data_manager.dart';
 import 'package:spotted_flutter/view/first_page.dart';
 import 'package:spotted_flutter/view/main_page.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Palette.black,
-    systemNavigationBarColor: Palette.black
-  ));
+      statusBarColor: Palette.black, systemNavigationBarColor: Palette.black));
   runApp(const MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
