@@ -1,8 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:spotted_flutter/enums/palette.dart';
+import 'package:spotted_flutter/managers/account_manager.dart';
+import 'package:spotted_flutter/model/user.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class AccountFragment extends StatefulWidget {
-  const AccountFragment(this.changeIndexCallback,{super.key});
+  const AccountFragment(this.changeIndexCallback, {super.key});
+
   final Function(int) changeIndexCallback;
 
   @override
@@ -10,9 +15,126 @@ class AccountFragment extends StatefulWidget {
 }
 
 class _AccountFragmentState extends State<AccountFragment> {
+  User user=AccountManager().user;
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Palette.scheme.background,
-    );  }
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: 100,
+            height: 100,
+            decoration: BoxDecoration(
+              color: Palette.white,
+              borderRadius: BorderRadius.circular(999),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(999),
+              child: CachedNetworkImage(
+                fit: BoxFit.fill,
+                imageUrl: user.avatar,
+              ),
+            ),
+          ),
+          SizedBox(height: 10), // Spazio tra l'immagine e la riga di testo
+          Text(
+            '${user.name} ${user.surname}',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/instagram.png',
+                width: 16,
+                height: 16,
+              ),
+              SizedBox(width: 8), // Spazio tra l'icona e il testo
+              Text(
+                '${user.instagramNickname}',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+
+          Container(
+            margin: EdgeInsets.only(top: 26),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  '${user.posts.length}',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  '${user.following.length}',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  '${user.comments.length}',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+            Container(
+              margin: EdgeInsets.only(top: 26),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  'Posts',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(width: 8),
+                Text(
+                  'Following',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(width: 8),
+                Text(
+                  'Commenti',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

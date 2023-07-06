@@ -1,10 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:spotted_flutter/managers/account_manager.dart';
 import 'package:spotted_flutter/managers/data_manager.dart';
 import 'package:spotted_flutter/view/fragments/first_fragment.dart';
 
+import '../enums/strings.dart';
 import 'fragments/login_fragment.dart';
 
 class FirstPage extends StatefulWidget {
@@ -44,7 +46,7 @@ class _FirstPageState extends State<FirstPage> {
             Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Color(0xFF000000), Color(0x00000000)],
+                  colors: [Colors.black, Colors.transparent],
                   begin: Alignment.bottomCenter,
                   end: Alignment.topCenter,
                 ),
@@ -54,12 +56,11 @@ class _FirstPageState extends State<FirstPage> {
               alignment: Alignment.topCenter,
               child: Container(
                 margin: EdgeInsets.all(16.0),
-                child: const Padding(
+                child: Padding(
                   padding: EdgeInsets.only(top: 56.0),
                   child: Text(
-                    'Spotted!',
-                    style: TextStyle(
-                      fontFamily: 'clicker_script_regular',
+                    appTitle,
+                    style: GoogleFonts.clickerScript(
                       fontSize: 52,
                       color: Colors.white,
                     ),
@@ -104,6 +105,7 @@ class _FirstPageState extends State<FirstPage> {
             children: [
               CircularProgressIndicator(), // GIF di caricamento
               SizedBox(height: 24),
+              Text(""),
             ],
           ),
         );
