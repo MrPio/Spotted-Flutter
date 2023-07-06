@@ -26,19 +26,28 @@ class DataManager {
   List<User> cachedUsers = [];
 
   /// Fetch all the application's needed start data
-  Future<void> fetchData() async {
+  fetchData() async {
     tags = Tags.values.toList(growable: false);
     cachedUsers = (await DatabaseManager().getList('users', pageSize: 9999))
-        ?.map((e) => User.fromJson(e))
-        .toList() ??
+            ?.map((e) => User.fromJson(e))
+            .toList() ??
         [];
     // settingMenus=SeederManager.generateSettings(context)
   }
 
-  Future<void> loadMore() async {
+  // Request a new page for paginated data
+  loadMore() async {
     posts.addAll((await DatabaseManager().getList("posts"))
-            ?.map((e) => Post.fromJson(e)).sorted((a, b) => a.timestamp.compareTo(b.timestamp)).reversed ??
+            ?.map((e) => Post.fromJson(e))
+            .sorted((a, b) => a.timestamp.compareTo(b.timestamp))
+            .reversed ??
         []);
+  }
+
+  // Remove the last page pointer of paginated data
+  reloadPaginatedData() {
+    posts = [];
+    DatabaseManager().paginateKeys.clear();
   }
 
   /// Load a single User object from a given uid
@@ -72,7 +81,7 @@ class DataManager {
   }
 
   /// Load the first 30 posts of a given User
-  Future<void> loadUserPosts(User user) async {
+  loadUserPosts(User user) async {
     user.posts.clear();
     for (String postUID in user.postsUIDs.reversed.take(30)) {
       if (user.posts.firstWhereOrNull((post) => post.uid == postUID) == null) {
@@ -85,7 +94,7 @@ class DataManager {
   }
 
   /// Load the first 30 following posts of a given User
-  Future<void> loadUserFollowingPosts(User user) async {
+  loadUserFollowingPosts(User user) async {
     user.followingPosts.clear();
     for (String postUID in user.following.reversed.take(30)) {
       if (user.posts.firstWhereOrNull((post) => post.uid == postUID) == null) {

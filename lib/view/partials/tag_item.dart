@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:spotted_flutter/enums/fonts.dart';
 import 'package:spotted_flutter/enums/palette.dart';
+import 'package:spotted_flutter/enums/tags.dart';
 
 class TagItem extends StatelessWidget {
-  const TagItem({super.key, required this.icon, required this.text});
+  const TagItem({super.key, required this.tag});
 
-  final IconData icon;
-  final String text;
+  final Tags tag;
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +21,15 @@ class TagItem extends StatelessWidget {
         child: Row(
           children: [
             Icon(
-              icon,
+              tag.icon,
               color: Palette.white,
               size: 20,
             ),
             SizedBox(width: 4),
             Text(
-              text,
+              tag.title,
               style: Fonts.regular(color:Palette.white),
+              overflow: TextOverflow.fade,
             )
           ],
         ),

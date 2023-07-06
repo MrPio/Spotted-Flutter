@@ -4,6 +4,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:spotted_flutter/enums/palette.dart';
 import 'package:spotted_flutter/managers/data_manager.dart';
+import 'package:spotted_flutter/model/post.dart';
 import 'package:spotted_flutter/view/first_page.dart';
 import 'package:spotted_flutter/view/main_page.dart';
 import 'package:spotted_flutter/view/view_post_page.dart';
@@ -48,9 +49,9 @@ class MyApp extends StatelessWidget {
       title: 'Spotted!',
       theme: Palette.theme,
       routes: <String, WidgetBuilder>{
-        '/': (BuildContext context) => const FirstPage(),
-        '/main': (BuildContext context) => const MainPage(),
-        '/view_post': (BuildContext context) => ViewPostPage(),
+        '/': ( context) => const FirstPage(),
+        '/main': ( context) => const MainPage(),
+        '/view_post': ( context) => ViewPostPage((ModalRoute.of(context)?.settings.arguments ??Post()) as Post),
       },
     );
   }

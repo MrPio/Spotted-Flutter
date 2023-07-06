@@ -14,7 +14,7 @@ class AccountManager {
   Future<bool> cacheLogin() async {
     const uid = "rPg4dSvpc3dJO6Re3WLk4exxBWa2";
     user = await DataManager().loadUser(uid, force: true);
-    return false;
+    return true;
   }
 
   Future<void> login(emailAddress,password ) async {

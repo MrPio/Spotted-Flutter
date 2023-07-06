@@ -19,7 +19,7 @@ class HomeFragment extends StatefulWidget {
 }
 
 class _HomeFragmentState extends State<HomeFragment> {
-  List<Post> posts = [];
+  List<Post?> posts = [];
   var isLoading = true;
   final _postsController = ScrollController();
 
@@ -113,30 +113,39 @@ class _HomeFragmentState extends State<HomeFragment> {
 
               // Posts list
               Expanded(
-                child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: posts.length,
-                  controller: _postsController,
-                  itemBuilder: (context, i) => SpotPost(post: posts[i]),
-                  padding: const EdgeInsets.only(bottom: 120),
+                child: RefreshIndicator(
+                  onRefresh: reload,
+                  child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: posts.length,
+                    controller: _postsController,
+                    itemBuilder: (context, i) => SpotPost(post: posts[i]),
+                    padding: const EdgeInsets.only(bottom: 120),
+                  ),
                 ),
               ),
             ],
           ),
         ),
-        LoadingView(
-          visible: isLoading,
-        )
+        // LoadingView(
+        //   visible: isLoading,
+        // )
       ],
     );
   }
 
+  Future<void> reload() async {
+    DataManager().reloadPaginatedData();
+    await loadMore();
+  }
+
   loadMore() async {
+    setState(() => posts = List.generate(10, (_) => null));
     await DataManager().loadMore();
+    await Future.delayed(Duration(milliseconds: 750));
     posts = DataManager().posts;
-    isLoading = false;
-    setState(() {});
+    setState(() => isLoading = false);
   }
 
   @override
