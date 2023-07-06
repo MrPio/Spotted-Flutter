@@ -92,6 +92,23 @@ class _FirstPageState extends State<FirstPage> {
   }
 
   initialize() async {
+    // Mostra la GIF di caricamento
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.transparent,
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircularProgressIndicator(), // GIF di caricamento
+              SizedBox(height: 24),
+            ],
+          ),
+        );
+      },
+    );
     await DataManager().fetchData();
     if (await AccountManager().cacheLogin()) {
       Navigator.of(context).pushNamed("/main");
