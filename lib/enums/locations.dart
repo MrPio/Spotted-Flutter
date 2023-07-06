@@ -324,7 +324,7 @@ enum Locations {
   // Plexuses get plexus =>
   //     _imageUrl??Plexuses.values.firstWhere((element) => element.locations.contains(this));
 
-  final String? title;
+  final String title;
   final String? _imageUrl;
 
   final double latitude;

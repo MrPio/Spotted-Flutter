@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:spotted_flutter/enums/fonts.dart';
 import 'package:spotted_flutter/enums/palette.dart';
 import 'package:spotted_flutter/enums/remote_images.dart';
 import 'package:spotted_flutter/managers/account_manager.dart';
+import 'package:spotted_flutter/managers/data_manager.dart';
 import 'package:spotted_flutter/model/post.dart';
 import 'package:spotted_flutter/view/partials/loading_view.dart';
 import 'package:spotted_flutter/view/partials/spot_post.dart';
@@ -17,17 +19,9 @@ class HomeFragment extends StatefulWidget {
 }
 
 class _HomeFragmentState extends State<HomeFragment> {
-  List<Post> posts = [
-    Post(),
-    Post(),
-    Post(),
-    Post(),
-    Post(),
-    Post(),
-    Post(),
-    Post()
-  ];
-  var isLoading = false;
+  List<Post> posts = [];
+  var isLoading = true;
+  final _postsController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +30,7 @@ class _HomeFragmentState extends State<HomeFragment> {
         Container(
           color: Palette.scheme.background,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Header
               Container(
@@ -96,12 +91,33 @@ class _HomeFragmentState extends State<HomeFragment> {
                 ),
               ),
 
+              // Title
+              SizedBox(height: 14),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Ciao, ${AccountManager().user.name}!",
+                      style: Fonts.black(),
+                    ),
+                    Text(
+                      "Ecco gli ultimi post di spotted, ti riconosci?",
+                      style: Fonts.regular(),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 18),
+
               // Posts list
               Expanded(
                 child: ListView.builder(
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   itemCount: posts.length,
+                  controller: _postsController,
                   itemBuilder: (context, i) => SpotPost(post: posts[i]),
                   padding: const EdgeInsets.only(bottom: 120),
                 ),
@@ -116,8 +132,30 @@ class _HomeFragmentState extends State<HomeFragment> {
     );
   }
 
+  loadMore() async {
+    await DataManager().loadMore();
+    posts = DataManager().posts;
+    isLoading = false;
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
+    loadMore();
+    _postsController.addListener(() {
+      if (_postsController.position.pixels >
+          _postsController.position.maxScrollExtent - 50) {
+        isLoading = true;
+        setState(() {});
+        loadMore();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _postsController.dispose();
+    super.dispose();
   }
 }

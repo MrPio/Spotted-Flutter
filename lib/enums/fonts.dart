@@ -4,22 +4,22 @@ import 'package:spotted_flutter/enums/palette.dart';
 
 class Fonts {
   static light([color]) => GoogleFonts.lato(
-      color: color ??Palette.scheme.onPrimary,
+      color: color ??Palette.scheme.onSecondary,
       fontSize: 14,
-      fontWeight: FontWeight.w200);
+      fontWeight: FontWeight.w300);
 
   static regular([color]) => GoogleFonts.lato(
-      color: color ??Palette.scheme.onPrimary,
+      color: color ??Palette.scheme.onSecondary,
       fontSize: 14,
       fontWeight: FontWeight.normal);
 
   static bold([color]) => GoogleFonts.lato(
-      color: color ?? Palette.scheme.onPrimary,
-      fontSize: 16,
+      color: color ?? Palette.scheme.onSecondary,
+      fontSize: 18,
       fontWeight: FontWeight.bold);
 
   static black([color]) => GoogleFonts.lato(
-      color: color ??Palette.scheme.onPrimary,
-      fontSize: 22,
+      color: color ??Palette.scheme.onSecondary,
+      fontSize: 24,
       fontWeight: FontWeight.w900);
 }

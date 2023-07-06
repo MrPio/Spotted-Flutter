@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:spotted_flutter/enums/fonts.dart';
+import 'package:spotted_flutter/enums/locations.dart';
 import 'package:spotted_flutter/enums/palette.dart';
 import 'package:spotted_flutter/enums/remote_images.dart';
 import 'package:spotted_flutter/extension/function/date_time_extensions.dart';
 import 'package:spotted_flutter/managers/account_manager.dart';
+import 'package:spotted_flutter/managers/data_manager.dart';
 import 'package:spotted_flutter/model/post.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:spotted_flutter/view/partials/highlight_view.dart';
+import 'package:spotted_flutter/view/partials/tag_item.dart';
 
 class SpotPost extends StatefulWidget {
   const SpotPost({required this.post, super.key});
@@ -18,12 +22,14 @@ class SpotPost extends StatefulWidget {
 }
 
 class _SpotPostState extends State<SpotPost> {
+  var avatar = RemoteImages.ANONYMOUS.url;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Container(
-        margin: const EdgeInsets.only(top: 24),
+        margin: const EdgeInsets.only(bottom: 18),
         decoration: BoxDecoration(
           color: Palette.scheme.onPrimary,
           borderRadius: BorderRadius.circular(18),
@@ -47,13 +53,13 @@ class _SpotPostState extends State<SpotPost> {
                 height: double.infinity,
                 child: CachedNetworkImage(
                   fit: BoxFit.cover,
-                  imageUrl: widget.post.location.imageUrl,
+                  imageUrl: (widget.post.location ?? Locations.ANCONA).imageUrl,
                 ),
               ),
 
               // Vignette
               Opacity(
-                opacity: 0.75,
+                opacity: 0.85,
                 child: Container(
                   width: double.infinity,
                   height: double.infinity,
@@ -61,31 +67,25 @@ class _SpotPostState extends State<SpotPost> {
                     gradient: LinearGradient(
                       colors: [Colors.black, Colors.transparent],
                       begin: Alignment.bottomCenter,
-                      end: Alignment.center,
+                      end: Alignment(0.0, -0.25),
                     ),
                   ),
                 ),
               ),
 
-              Material(
-                color: Colors.transparent,
-                child: SizedBox.fromSize(
-                    size: Size.infinite,
-                    child: InkWell(
-                      onTap: () {},
-                    )),
-              ),
+              // HighlightView
+              HighlightView(onTap: () {}),
 
               // Content
-              SizedBox.fromSize(
-                size: Size.infinite,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Top content
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,7 +113,7 @@ class _SpotPostState extends State<SpotPost> {
                               Container(
                                 margin:
                                     const EdgeInsetsDirectional.only(start: 4),
-                                height: 24,
+                                height: 26,
                                 decoration: BoxDecoration(
                                   color: Palette.black,
                                   borderRadius: BorderRadius.circular(999),
@@ -141,16 +141,136 @@ class _SpotPostState extends State<SpotPost> {
                               color: Palette.white,
                               borderRadius: BorderRadius.circular(999),
                             ),
-                            child: CachedNetworkImage(
-                              fit: BoxFit.fill,
-                              imageUrl: widget.post.author?.avatar ??
-                                  RemoteImages.ANONYMOUS.url,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(999),
+                              child: CachedNetworkImage(
+                                fit: BoxFit.fill,
+                                imageUrl: avatar,
+                              ),
                             ),
                           )
                         ],
                       ),
-                    ],
-                  ),
+                    ),
+
+                    // Bottom content
+                    Column(
+                      children: [
+                        Padding(
+                          padding:
+                              EdgeInsetsDirectional.symmetric(horizontal: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.location_on,
+                                    color: Palette.white,
+                                    size: 26,
+                                  ),
+                                  SizedBox(width: 4),
+                                  Text(
+                                    (widget.post.location ?? Locations.ANCONA)
+                                        .title,
+                                    style: Fonts.bold(Palette.white),
+                                  )
+                                ],
+                              ),
+                              Icon(
+                                widget.post.gender.icon,
+                                color: Palette.white,
+                                size: 36,
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 4),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.calendar_today,
+                                    color: Palette.white,
+                                    size: 20,
+                                  ),
+                                  SizedBox(width: 4),
+                                  Text(
+                                    widget.post.date.toDateStr(),
+                                    style: Fonts.regular(Palette.white),
+                                  ),
+                                  SizedBox(width: 8),
+                                  Icon(
+                                    Icons.access_time_filled,
+                                    color: Palette.white,
+                                    size: 20,
+                                  ),
+                                  SizedBox(width: 4),
+                                  Text(
+                                    widget.post.date.toTimeStr(),
+                                    style: Fonts.regular(Palette.white),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.message,
+                                    color: Palette.white,
+                                    size: 20,
+                                  ),
+                                  SizedBox(width: 4),
+                                  Text(
+                                    widget.post.comments.length.toString(),
+                                    style: Fonts.regular(Palette.white),
+                                  ),
+                                  SizedBox(width: 8),
+                                  Icon(
+                                    Icons.bookmark,
+                                    color: Palette.white,
+                                    size: 20,
+                                  ),
+                                  SizedBox(width: 4),
+                                  Text(
+                                    widget.post.followers.length.toString(),
+                                    style: Fonts.regular(Palette.white),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Expanded(
+                              child: SizedBox(
+                                height: 30,
+                                child: ListView.builder(
+                                  padding: EdgeInsetsDirectional.symmetric(
+                                      horizontal: 20),
+                                  scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true,
+                                  itemCount: widget.post.tags.length,
+                                  itemBuilder: (context, index) => Padding(
+                                    padding: const EdgeInsets.only(right: 4),
+                                    child: TagItem(
+                                        icon: widget.post.tags[index].icon,
+                                        text: widget.post.tags[index].title),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -158,5 +278,15 @@ class _SpotPostState extends State<SpotPost> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Future.sync(() async {
+      if (!widget.post.anonymous)
+        avatar = (await DataManager().loadUser(widget.post.authorUID)).avatar;
+      setState(() {});
+    });
   }
 }

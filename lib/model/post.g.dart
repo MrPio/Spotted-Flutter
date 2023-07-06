@@ -13,7 +13,7 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
       timestamp: json['timestamp'] as int? ?? 0,
       description: json['description'] as String? ?? "",
       tags: (json['tags'] as List<dynamic>?)
-          ?.map((e) => Tag.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => $enumDecode(_$TagsEnumMap, e))
           .toList(),
       followers: (json['followers'] as List<dynamic>?)
           ?.map((e) => e as String)
@@ -33,7 +33,7 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'gender': _$GenderEnumMap[instance.gender]!,
       'timestamp': instance.timestamp,
       'description': instance.description,
-      'tags': instance.tags,
+      'tags': instance.tags.map((e) => _$TagsEnumMap[e]!).toList(),
       'followers': instance.followers,
       'comments': instance.comments,
       'latitude': instance.latitude,
@@ -109,4 +109,17 @@ const _$GenderEnumMap = {
   Gender.MALE: 'MALE',
   Gender.FEMALE: 'FEMALE',
   Gender.OTHER: 'OTHER',
+};
+
+const _$TagsEnumMap = {
+  Tags.ALTO: 'ALTO',
+  Tags.BASSO: 'BASSO',
+  Tags.RICCI: 'RICCI',
+  Tags.LISCI: 'LISCI',
+  Tags.FELPA: 'FELPA',
+  Tags.CAMICIA: 'CAMICIA',
+  Tags.GIUBBOTTO: 'GIUBBOTTO',
+  Tags.CARDIGAN: 'CARDIGAN',
+  Tags.DA_VISTA: 'DA_VISTA',
+  Tags.DA_SOLE: 'DA_SOLE',
 };

@@ -1,8 +1,8 @@
 import 'package:spotted_flutter/enums/gender.dart';
 import 'package:spotted_flutter/enums/remote_images.dart';
+import 'package:spotted_flutter/enums/tags.dart';
 import 'comment.dart';
 import 'post.dart';
-import 'tag.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user.g.dart';
@@ -14,7 +14,7 @@ class User {
   final String avatar;
   final int regDateTimestamp;
   final Gender gender;
-  final List<Tag> tags;
+  final List<Tags> tags;
   final List<String> postsUIDs;
   final List<Comment> comments;
   final List<String> following;
@@ -36,7 +36,7 @@ class User {
     String? avatar,
     int? regDateTimestamp,
     Gender? gender,
-    List<Tag>? tags,
+    List<Tags>? tags,
     List<String>? postsUIDs,
     List<Comment>? comments,
     List<String>? following,

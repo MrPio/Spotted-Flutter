@@ -1,9 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:spotted_flutter/enums/gender.dart';
 import 'package:spotted_flutter/enums/locations.dart';
-import 'package:spotted_flutter/extension/function/date_time_extensions.dart';
+import 'package:spotted_flutter/enums/tags.dart';
 import 'comment.dart';
-import 'tag.dart';
 import 'user.dart';
 
 part 'post.g.dart';
@@ -11,11 +10,11 @@ part 'post.g.dart';
 @JsonSerializable()
 class Post {
   final String? authorUID;
-  final Locations location;
+  final Locations? location;
   final Gender gender;
   final int timestamp;
   final String description;
-  final List<Tag> tags;
+  final List<Tags> tags;
   final List<String> followers;
   final List<Comment> comments;
   final double? latitude;
@@ -38,7 +37,7 @@ class Post {
     Gender? gender,
     this.timestamp = 0,
     this.description = "",
-    List<Tag>? tags,
+    List<Tags>? tags,
     List<String>? followers,
     List<Comment>? comments,
     this.latitude,
@@ -57,7 +56,7 @@ class Post {
 
   DateTime get date => DateTime.fromMillisecondsSinceEpoch(timestamp);
 
-  int calculateRelevance(List<Tag> tags) {
+  int calculateRelevance(List<Tags> tags) {
     if (tags.isEmpty) return 0;
     return tags.where((tag) => this.tags.contains(tag)).length *
         100 ~/

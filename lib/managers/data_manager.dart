@@ -1,8 +1,10 @@
+import 'dart:ffi';
+
+import 'package:spotted_flutter/enums/tags.dart';
 import 'package:spotted_flutter/managers/account_manager.dart';
 import 'package:spotted_flutter/managers/database_manager.dart';
 import 'package:spotted_flutter/model/post.dart';
 import 'package:spotted_flutter/model/setting_menu.dart';
-import 'package:spotted_flutter/model/tag.dart';
 import 'package:spotted_flutter/model/user.dart';
 import 'package:collection/collection.dart';
 
@@ -18,18 +20,28 @@ class DataManager {
   static const pageSize = 100;
 
   List<Post> posts = [];
-  List<Tag> tags = [];
+  List<Tags> tags = [];
   List<SettingMenu> settingMenus = [];
   final anonymous = User();
-  List<User> _cachedUsers = [];
+  List<User> cachedUsers = [];
 
   /// Fetch all the application's needed start data
   Future<void> fetchData() async {
-    // tags = DatabaseManager.getList<Tag>("tags", pageSize = 999)?.toSet() ?: setOf()
-    // cachedUsers = DatabaseManager.getList<User>("users", 9999)?.toMutableSet() ?: mutableSetOf()
+    tags = Tags.values.toList(growable: false);
+    cachedUsers = (await DatabaseManager().getList('users', pageSize: 9999))
+        ?.map((e) => User.fromJson(e))
+        .toList() ??
+        [];
     // settingMenus=SeederManager.generateSettings(context)
   }
 
+  Future<void> loadMore() async {
+    posts.addAll((await DatabaseManager().getList("posts"))
+            ?.map((e) => Post.fromJson(e)).sorted((a, b) => a.timestamp.compareTo(b.timestamp)).reversed ??
+        []);
+  }
+
+  /// Load a single User object from a given uid
   Future<User> loadUser(String? uid, {force = false}) async {
     if (!force) {
       // Is anonymous?
@@ -39,7 +51,7 @@ class DataManager {
 
       // Already cached?
       User? cachedUser =
-          _cachedUsers.firstWhereOrNull((user) => user.uid == uid);
+          cachedUsers.firstWhereOrNull((user) => user.uid == uid);
       if (cachedUser != null) {
         return cachedUser;
       }
@@ -55,11 +67,11 @@ class DataManager {
     user.uid = uid;
     loadUserPosts(user);
     loadUserFollowingPosts(user);
-    _cachedUsers.add(user);
+    cachedUsers.add(user);
     return user;
   }
 
-  // Load the first 30 posts of a given User
+  /// Load the first 30 posts of a given User
   Future<void> loadUserPosts(User user) async {
     user.posts.clear();
     for (String postUID in user.postsUIDs.reversed.take(30)) {
@@ -72,6 +84,7 @@ class DataManager {
     }
   }
 
+  /// Load the first 30 following posts of a given User
   Future<void> loadUserFollowingPosts(User user) async {
     user.followingPosts.clear();
     for (String postUID in user.following.reversed.take(30)) {

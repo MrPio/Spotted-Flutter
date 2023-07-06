@@ -13,7 +13,7 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       regDateTimestamp: json['regDateTimestamp'] as int?,
       gender: $enumDecodeNullable(_$GenderEnumMap, json['gender']),
       tags: (json['tags'] as List<dynamic>?)
-          ?.map((e) => Tag.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => $enumDecode(_$TagsEnumMap, e))
           .toList(),
       postsUIDs: (json['postsUIDs'] as List<dynamic>?)
           ?.map((e) => e as String)
@@ -34,7 +34,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'avatar': instance.avatar,
       'regDateTimestamp': instance.regDateTimestamp,
       'gender': _$GenderEnumMap[instance.gender]!,
-      'tags': instance.tags,
+      'tags': instance.tags.map((e) => _$TagsEnumMap[e]!).toList(),
       'postsUIDs': instance.postsUIDs,
       'comments': instance.comments,
       'following': instance.following,
@@ -46,4 +46,17 @@ const _$GenderEnumMap = {
   Gender.MALE: 'MALE',
   Gender.FEMALE: 'FEMALE',
   Gender.OTHER: 'OTHER',
+};
+
+const _$TagsEnumMap = {
+  Tags.ALTO: 'ALTO',
+  Tags.BASSO: 'BASSO',
+  Tags.RICCI: 'RICCI',
+  Tags.LISCI: 'LISCI',
+  Tags.FELPA: 'FELPA',
+  Tags.CAMICIA: 'CAMICIA',
+  Tags.GIUBBOTTO: 'GIUBBOTTO',
+  Tags.CARDIGAN: 'CARDIGAN',
+  Tags.DA_VISTA: 'DA_VISTA',
+  Tags.DA_SOLE: 'DA_SOLE',
 };
