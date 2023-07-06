@@ -17,10 +17,10 @@ class _LoginFragmentState extends State<LoginFragment> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  void _login() {
+  Future<void> _login() async {
     String email = _emailController.text;
     String password = _passwordController.text;
-    AccountManager().login(email, password);
+    await AccountManager().login(email, password);
   }
 
   @override
@@ -78,8 +78,8 @@ class _LoginFragmentState extends State<LoginFragment> {
                       style: TextStyle(color: Colors.black),
                     ),
                     ElevatedButton(
-                      onPressed: () {
-                        _login();
+                      onPressed: () async {
+                        await _login();
                         Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => MainPage()),
