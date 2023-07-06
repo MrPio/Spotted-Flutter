@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-
 import '../../enums/palette.dart';
+import '../../managers/account_manager.dart';
+import '../main_page.dart';
 
 class LoginFragment extends StatefulWidget {
   final void Function(int) setIndex;
@@ -10,7 +11,24 @@ class LoginFragment extends StatefulWidget {
   State<LoginFragment> createState() => _LoginFragmentState();
 }
 
+
+
 class _LoginFragmentState extends State<LoginFragment> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  void _login() {
+    String email = _emailController.text;
+    String password = _passwordController.text;
+    AccountManager().login(email, password);
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -35,6 +53,7 @@ class _LoginFragmentState extends State<LoginFragment> {
                       ),
                     ),
                     TextFormField(
+                      controller: _emailController,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                       ),
@@ -48,6 +67,7 @@ class _LoginFragmentState extends State<LoginFragment> {
                       ),
                     ),
                     TextFormField(
+                      controller: _passwordController,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                       ),
@@ -58,7 +78,12 @@ class _LoginFragmentState extends State<LoginFragment> {
                       style: TextStyle(color: Colors.black),
                     ),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        _login();
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MainPage()),
+                      );},
                       child: Text('Login'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Palette.black,
