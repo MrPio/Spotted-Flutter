@@ -28,7 +28,7 @@ class TagItem extends StatelessWidget {
             SizedBox(width: 4),
             Text(
               text,
-              style: Fonts.regular(Palette.white),
+              style: Fonts.regular(color:Palette.white),
             )
           ],
         ),

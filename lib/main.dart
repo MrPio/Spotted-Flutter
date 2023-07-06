@@ -6,6 +6,7 @@ import 'package:spotted_flutter/enums/palette.dart';
 import 'package:spotted_flutter/managers/data_manager.dart';
 import 'package:spotted_flutter/view/first_page.dart';
 import 'package:spotted_flutter/view/main_page.dart';
+import 'package:spotted_flutter/view/view_post_page.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
           onError: Colors.black54,
           background: isLight ? Palette.grey : Palette.darkBlack,
           onBackground: isLight ? Palette.black : Palette.grey,
-          surface: Colors.black26,
+          surface: isLight ? Palette.black : Palette.darkBlack,
           onSurface: isLight ? Palette.white : Palette.darkBlack,
         ));
 
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         '/': (BuildContext context) => const FirstPage(),
         '/main': (BuildContext context) => const MainPage(),
+        '/view_post': (BuildContext context) => ViewPostPage(),
       },
     );
   }

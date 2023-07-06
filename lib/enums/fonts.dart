@@ -3,23 +3,23 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:spotted_flutter/enums/palette.dart';
 
 class Fonts {
-  static light([color]) => GoogleFonts.lato(
+  static light({color,double? size}) => GoogleFonts.lato(
       color: color ??Palette.scheme.onSecondary,
-      fontSize: 14,
+      fontSize: size??14,
       fontWeight: FontWeight.w300);
 
-  static regular([color]) => GoogleFonts.lato(
+  static regular({color,double? size}) => GoogleFonts.lato(
       color: color ??Palette.scheme.onSecondary,
-      fontSize: 14,
+      fontSize: size??14,
       fontWeight: FontWeight.normal);
 
-  static bold([color]) => GoogleFonts.lato(
+  static bold({color,double? size}) => GoogleFonts.lato(
       color: color ?? Palette.scheme.onSecondary,
-      fontSize: 18,
+      fontSize: size??18,
       fontWeight: FontWeight.bold);
 
-  static black([color]) => GoogleFonts.lato(
+  static black({color,double? size}) => GoogleFonts.lato(
       color: color ??Palette.scheme.onSecondary,
-      fontSize: 24,
+      fontSize: size??24,
       fontWeight: FontWeight.w900);
 }

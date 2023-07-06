@@ -1,5 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:spotted_flutter/enums/fonts.dart';
 import 'package:spotted_flutter/enums/locations.dart';
 import 'package:spotted_flutter/enums/palette.dart';
@@ -8,7 +8,6 @@ import 'package:spotted_flutter/extension/function/date_time_extensions.dart';
 import 'package:spotted_flutter/managers/account_manager.dart';
 import 'package:spotted_flutter/managers/data_manager.dart';
 import 'package:spotted_flutter/model/post.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:spotted_flutter/view/partials/highlight_view.dart';
 import 'package:spotted_flutter/view/partials/tag_item.dart';
 
@@ -74,7 +73,7 @@ class _SpotPostState extends State<SpotPost> {
               ),
 
               // HighlightView
-              HighlightView(onTap: () {}),
+              HighlightView(onTap: () =>Navigator.of(context).pushNamed("/view_post",arguments: widget.post)),
 
               // Content
               Padding(
@@ -105,7 +104,7 @@ class _SpotPostState extends State<SpotPost> {
                                     alignment: Alignment.center,
                                     child: Text(
                                       "${widget.post.calculateRelevance(AccountManager().user.tags)}%",
-                                      style: Fonts.regular(Palette.white),
+                                      style: Fonts.regular(color:Palette.white),
                                     ),
                                   ),
                                 ),
@@ -125,7 +124,7 @@ class _SpotPostState extends State<SpotPost> {
                                     alignment: Alignment.center,
                                     child: Text(
                                       widget.post.date.toPostStr(),
-                                      style: Fonts.regular(Palette.white),
+                                      style: Fonts.regular(color:Palette.white),
                                     ),
                                   ),
                                 ),
@@ -173,7 +172,7 @@ class _SpotPostState extends State<SpotPost> {
                                   Text(
                                     (widget.post.location ?? Locations.ANCONA)
                                         .title,
-                                    style: Fonts.bold(Palette.white),
+                                    style: Fonts.bold(color:Palette.white),
                                   )
                                 ],
                               ),
@@ -201,7 +200,7 @@ class _SpotPostState extends State<SpotPost> {
                                   SizedBox(width: 4),
                                   Text(
                                     widget.post.date.toDateStr(),
-                                    style: Fonts.regular(Palette.white),
+                                    style: Fonts.regular(color:Palette.white),
                                   ),
                                   SizedBox(width: 8),
                                   Icon(
@@ -212,7 +211,7 @@ class _SpotPostState extends State<SpotPost> {
                                   SizedBox(width: 4),
                                   Text(
                                     widget.post.date.toTimeStr(),
-                                    style: Fonts.regular(Palette.white),
+                                    style: Fonts.regular(color:Palette.white),
                                   ),
                                 ],
                               ),
@@ -226,7 +225,7 @@ class _SpotPostState extends State<SpotPost> {
                                   SizedBox(width: 4),
                                   Text(
                                     widget.post.comments.length.toString(),
-                                    style: Fonts.regular(Palette.white),
+                                    style: Fonts.regular(color:Palette.white),
                                   ),
                                   SizedBox(width: 8),
                                   Icon(
@@ -237,7 +236,7 @@ class _SpotPostState extends State<SpotPost> {
                                   SizedBox(width: 4),
                                   Text(
                                     widget.post.followers.length.toString(),
-                                    style: Fonts.regular(Palette.white),
+                                    style: Fonts.regular(color:Palette.white),
                                   ),
                                 ],
                               )
