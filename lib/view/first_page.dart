@@ -5,6 +5,8 @@ import 'package:spotted_flutter/managers/account_manager.dart';
 import 'package:spotted_flutter/managers/data_manager.dart';
 import 'package:spotted_flutter/view/fragments/first_fragment.dart';
 
+import 'fragments/login_fragment.dart';
+
 class FirstPage extends StatefulWidget {
   const FirstPage({Key? key}) : super(key: key);
 
@@ -14,9 +16,14 @@ class FirstPage extends StatefulWidget {
 
 class _FirstPageState extends State<FirstPage> {
   int _currentPageIndex = 0;
-  final List<Widget> _pages = const [
-    FirstFragment(),
-  ];
+  late List<Widget> _pages;
+
+  //Funzione di callback per cabiare i fragment
+  void setFragmentIndex(int index) {
+    setState(() {
+      _currentPageIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +78,11 @@ class _FirstPageState extends State<FirstPage> {
   @override
   void initState() {
     super.initState();
+
+    _pages = [
+      FirstFragment(setIndex: setFragmentIndex),
+      LoginFragment(setIndex: setFragmentIndex),
+    ];
 
     // Ensure the navigation to occur after the state is built
     SchedulerBinding.instance.addPostFrameCallback((_) async {

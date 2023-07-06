@@ -6,7 +6,8 @@ import '../../enums/strings.dart';
 import 'login_fragment.dart';
 
 class FirstFragment extends StatefulWidget {
-  const FirstFragment({super.key});
+  final void Function(int) setIndex;
+  FirstFragment({required this.setIndex});
 
   @override
   State<FirstFragment> createState() => _FirstFragmentState();
@@ -40,7 +41,7 @@ class _FirstFragmentState extends State<FirstFragment> {
             ),
             const SizedBox(height: 48),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {widget.setIndex(1);},
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Palette.red,
                     shape: RoundedRectangleBorder(

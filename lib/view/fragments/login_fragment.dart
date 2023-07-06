@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import '../../enums/palette.dart';
 
 class LoginFragment extends StatefulWidget {
-  const LoginFragment({super.key});
+  final void Function(int) setIndex;
+  LoginFragment({required this.setIndex});
 
   @override
   State<LoginFragment> createState() => _LoginFragmentState();
