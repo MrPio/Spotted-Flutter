@@ -11,17 +11,17 @@ part 'post.g.dart';
 @JsonSerializable()
 class Post implements JSONSerializable{
   final String? authorUID;
-  final Locations? location;
-  final Gender gender;
+  Locations? location;
+  Gender gender;
   final int timestamp;
-  final String description;
-  final List<Tags> tags;
+  String description;
+  List<Tags> tags;
   final List<String> followers;
   final List<Comment> comments;
   final double? latitude;
   final double? longitude;
   bool anonymous;
-  final bool spotted;
+  bool spotted;
 
   @JsonKey(includeFromJson: true, includeToJson: false)
   String? uid;

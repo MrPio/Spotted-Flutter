@@ -6,6 +6,7 @@ import 'package:spotted_flutter/enums/fonts.dart';
 import 'package:spotted_flutter/enums/locations.dart';
 import 'package:spotted_flutter/enums/palette.dart';
 import 'package:spotted_flutter/enums/tags.dart';
+import 'package:spotted_flutter/managers/account_manager.dart';
 import 'package:spotted_flutter/model/post.dart';
 import 'package:spotted_flutter/view/partials/loading_view.dart';
 import 'package:spotted_flutter/view/partials/rounded_button.dart';
@@ -21,7 +22,7 @@ class AddPostFragment extends StatefulWidget {
 }
 
 class _AddPostFragmentState extends State<AddPostFragment> {
-  Post post = Post();
+  Post post = Post(uid: AccountManager().user.uid,location: Locations.ANCONA);
   bool isLoading = false;
   final contentController = ScrollController();
   var imageOpacity = 1.0;
@@ -84,22 +85,64 @@ class _AddPostFragmentState extends State<AddPostFragment> {
                                   style: Fonts.bold(
                                       color: Palette.scheme.primary, size: 20),
                                 ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Modalità anonima',
-                                      style: Fonts.regular(size: 16),
-                                    ),
-                                    Checkbox(
-                                        fillColor:
-                                            MaterialStateProperty.resolveWith(
-                                                (_) =>
-                                                    Palette.scheme.onSecondary),
-                                        value: post.anonymous,
-                                        onChanged: (_) => setState(() =>
-                                            post.anonymous = !post.anonymous)),
-                                  ],
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 8),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Modalità anonima:',
+                                        style: Fonts.regular(size: 16),
+                                      ),
+                                      Checkbox(
+                                          fillColor:
+                                              MaterialStateProperty.resolveWith(
+                                                  (_) => Palette
+                                                      .scheme.onSecondary),
+                                          value: post.anonymous,
+                                          onChanged: (_) => setState(() => post
+                                              .anonymous = !post.anonymous)),
+                                    ],
+                                  ),
                                 ),
+                                Container(
+                                    height: 1.2,
+                                    width: double.infinity,
+                                    color: Palette.scheme.onSecondary
+                                        .withOpacity(0.1)),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 20),
+                                  child: Text(
+                                    'Zona',
+                                    style: Fonts.bold(
+                                        color: Palette.scheme.primary,
+                                        size: 20),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 8),
+                                  child: Expanded(
+                                    child: DropdownButton(
+                                      style: Fonts.regular(size: 16),
+                                      value: post.location!.name,
+                                      items: Locations.values
+                                          .map((e) => DropdownMenuItem<String>(
+                                                value: e.name,
+                                                child: Text(e.title),
+                                              ))
+                                          .toList(),
+                                      onChanged: (value) =>
+                                          setState(() => post.location = Locations.values.firstWhere((e) => e.name==value)),
+                                    ),
+                                  ),
+                                ),
+
+                                /*
+                                METTERE TUTTI TAG, MA SELEZIONABILI QUI, RIMUOVERE IL TAG +
+                                 */
                                 GridView.builder(
                                   shrinkWrap: true,
                                   physics: NeverScrollableScrollPhysics(),
@@ -125,11 +168,12 @@ class _AddPostFragmentState extends State<AddPostFragment> {
                     Align(
                       alignment: Alignment.bottomCenter,
                       child: Container(
-                        height: 290,
+                        height: 190,
                         color: Palette.scheme.background,
                         padding:
                             EdgeInsets.symmetric(horizontal: 30, vertical: 16),
                         child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Flexible(
                                 fit: FlexFit.tight,
