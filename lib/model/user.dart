@@ -22,7 +22,7 @@ class User implements JSONSerializable{
   final String? cellNumber;
   final String? instagramNickname;
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(includeFromJson: true, includeToJson: false)
   String? uid;
 
   @JsonKey(includeFromJson: false, includeToJson: false)

@@ -26,7 +26,7 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
           .toList(),
       cellNumber: json['cellNumber'] as String?,
       instagramNickname: json['instagramNickname'] as String?,
-    );
+    )..uid = json['uid'] as String?;
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'name': instance.name,

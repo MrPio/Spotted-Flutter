@@ -3,10 +3,11 @@ import 'package:spotted_flutter/enums/fonts.dart';
 import 'package:spotted_flutter/enums/palette.dart';
 
 class RoundedButton extends StatelessWidget {
-  const RoundedButton(this.text, {super.key, this.invertStyle = false});
+  const RoundedButton(this.text, {super.key, this.invertStyle = false, required this.onTap});
 
   final bool invertStyle;
   final String text;
+  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class RoundedButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(999),
         ),
       ),
-      onPressed: () {},
+      onPressed: onTap,
       child: Text(
         text,
         style: Fonts.regular(

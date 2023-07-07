@@ -13,7 +13,7 @@ class Post implements JSONSerializable{
   final String? authorUID;
   Locations? location;
   Gender gender;
-  final int timestamp;
+  int timestamp;
   String description;
   List<Tags> tags;
   final List<String> followers;

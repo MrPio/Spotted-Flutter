@@ -50,7 +50,7 @@ class DataManager {
   }
 
   /// Load a single User object from a given uid
-  Future<User> loadUser(String? uid, {force = false}) async {
+  Future<User> loadUser(String? uid, {bool force = false}) async {
     if (!force) {
       // Is anonymous?
       if (uid == null) {
@@ -60,14 +60,10 @@ class DataManager {
       // Already cached?
       User? cachedUser =
           cachedUsers.firstWhereOrNull((user) => user.uid == uid);
-      if (cachedUser != null) {
-        return cachedUser;
-      }
+      if (cachedUser != null) return cachedUser;
 
       // Is current User?
-      if (AccountManager().user.uid == uid) {
-        return AccountManager().user;
-      }
+      if (AccountManager().user.uid == uid) return AccountManager().user;
     }
 
     // Ask the database for the user and caching it
@@ -115,18 +111,20 @@ class DataManager {
     if (path == '') return;
 
     // Query the FirebaseRD
-    if (mode == SaveMode.PUT && model is JSONSerializable) {
-      DatabaseManager().put(path, model.toJSON());
-    } else {
-      String? uid = await DatabaseManager().post(path, model);
-      if (uid != null) {
-        // Any operations to be performed with the retrieved uid
-        if (model is Post) {
-          // Add the newly created post to current user's posts list
-          posts.add(model);
-          AccountManager().user.postsUIDs.add(uid);
-          AccountManager().user.posts.add(model);
-          save(AccountManager().user);
+    if (model is JSONSerializable) {
+      if (mode == SaveMode.PUT) {
+        DatabaseManager().put(path, model.toJSON());
+      } else {
+        String? uid = await DatabaseManager().post(path, model.toJSON());
+        if (uid != null) {
+          // Any operations to be performed with the retrieved uid
+          if (model is Post) {
+            // Add the newly created post to current user's posts list
+            posts.add(model);
+            AccountManager().user.postsUIDs.add(uid);
+            AccountManager().user.posts.add(model);
+            save(AccountManager().user);
+          }
         }
       }
     }

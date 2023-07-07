@@ -48,6 +48,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Spotted!',
       theme: Palette.theme,
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor*0.96,
+          ),
+          child: child!,
+        );
+      },
       routes: <String, WidgetBuilder>{
         '/': ( context) => FirstPage(),
         '/main': ( context) => MainPage(),

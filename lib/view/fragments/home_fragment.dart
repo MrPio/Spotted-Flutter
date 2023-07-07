@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:spotted_flutter/enums/fonts.dart';
 import 'package:spotted_flutter/enums/palette.dart';
 import 'package:spotted_flutter/enums/remote_images.dart';
+import 'package:spotted_flutter/extension/function/context_extensions.dart';
 import 'package:spotted_flutter/managers/account_manager.dart';
 import 'package:spotted_flutter/managers/data_manager.dart';
 import 'package:spotted_flutter/model/post.dart';
@@ -50,7 +51,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                           padding: const EdgeInsets.all(8.0),
                           child: IconButton(
                             splashRadius: 30,
-                            onPressed: () => widget.changeIndexCallback(3),
+                            onPressed: () =>context.popup('Impostazioni', message: 'Spiacenti, le impostazioni non sono acora state sviluppate, non sarebbe grandioso però?'),
                             icon: const Icon(Icons.menu),
                           ),
                         ),
@@ -145,13 +146,15 @@ class _HomeFragmentState extends State<HomeFragment> {
     await DataManager().loadMore();
     await Future.delayed(Duration(milliseconds: 300));
     posts = DataManager().posts;
+    for(var post in posts.where((post) =>post!=null && post.author==null))
+      post!.author=await DataManager().loadUser(post.authorUID);
     setState(() => isLoading = false);
   }
 
   @override
   void initState() {
     super.initState();
-    loadMore();
+    reload();
     _postsController.addListener(() {
       if (_postsController.position.pixels >
           _postsController.position.maxScrollExtent - 50) {
