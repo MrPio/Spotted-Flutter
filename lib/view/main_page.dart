@@ -73,11 +73,11 @@ class _MainPageState extends State<MainPage> {
                         active: _currentIndex == 2,
                         onTap: () => setState(() => _currentIndex = 2),
                       ),
-                      BottomBarIcon(
-                        icon: Icons.settings_outlined,
-                        active: _currentIndex == 3,
-                        onTap: () => setState(() => _currentIndex = 3),
-                      ),
+                      // BottomBarIcon(
+                      //   icon: Icons.settings_outlined,
+                      //   active: _currentIndex == 3,
+                      //   onTap: () => setState(() => _currentIndex = 3),
+                      // ),
                     ],
                   ),
                 ),

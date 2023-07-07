@@ -143,7 +143,7 @@ class _HomeFragmentState extends State<HomeFragment> {
   loadMore() async {
     setState(() => posts = List.generate(10, (_) => null));
     await DataManager().loadMore();
-    await Future.delayed(Duration(milliseconds: 750));
+    await Future.delayed(Duration(milliseconds: 500));
     posts = DataManager().posts;
     setState(() => isLoading = false);
   }

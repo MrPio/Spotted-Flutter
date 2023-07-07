@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:spotted_flutter/managers/account_manager.dart';
 import 'package:spotted_flutter/managers/data_manager.dart';
 import 'package:spotted_flutter/view/fragments/first_fragment.dart';
+import 'package:spotted_flutter/view/partials/loading_view.dart';
 
 import '../enums/strings.dart';
 import 'fragments/login_fragment.dart';
@@ -19,8 +20,9 @@ class FirstPage extends StatefulWidget {
 class _FirstPageState extends State<FirstPage> {
   int _currentPageIndex = 0;
   late List<Widget> _pages;
+  bool isLoading = true;
 
-  //Funzione di callback per cabiare i fragment
+  // Funzione di callback per cabiare i fragment
   void setFragmentIndex(int index) {
     setState(() {
       _currentPageIndex = index;
@@ -70,6 +72,7 @@ class _FirstPageState extends State<FirstPage> {
               ),
             ),
             _pages[_currentPageIndex],
+            LoadingView(visible: isLoading)
           ],
         ),
       ),
@@ -93,27 +96,10 @@ class _FirstPageState extends State<FirstPage> {
   }
 
   initialize() async {
-    // Mostra la GIF di caricamento
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Colors.transparent,
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CircularProgressIndicator(), // GIF di caricamento
-              SizedBox(height: 24),
-              Text(""),
-            ],
-          ),
-        );
-      },
-    );
     await DataManager().fetchData();
     if (await AccountManager().cacheLogin()) {
       Navigator.of(context).pushNamed("/main");
     }
+    setState(() => isLoading = false);
   }
 }

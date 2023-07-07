@@ -68,6 +68,7 @@ class _LoginFragmentState extends State<LoginFragment> {
                     ),
                     TextFormField(
                       controller: _passwordController,
+                      obscureText: true,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                       ),
@@ -80,10 +81,8 @@ class _LoginFragmentState extends State<LoginFragment> {
                     ElevatedButton(
                       onPressed: () async {
                         await _login();
-                        Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MainPage()),
-                      );},
+                        Navigator.of(context).pushNamed("/main");
+                        },
                       child: Text('Login'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Palette.black,
