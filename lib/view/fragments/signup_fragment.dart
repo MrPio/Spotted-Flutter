@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../enums/gender.dart';
 import '../../enums/palette.dart';
 import '../../managers/account_manager.dart';
 import '../../model/user.dart';
@@ -22,6 +23,7 @@ class _SignupFragmentState extends State<SignupFragment> {
   final TextEditingController _instaController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  Gender? selectedGender=null;
   String errorText = '';
 
   Future<void> _signUp() async {
@@ -29,17 +31,15 @@ class _SignupFragmentState extends State<SignupFragment> {
     if(name=='')throw('Nome è obbligatorio');
     String surname = _surnameController.text;
     if(surname=='')throw('Cognome è obbligatorio');
-
     String? phone = _phoneController.text;
     if(phone=='') phone=null;
     String? insta = _instaController.text;
     if(insta=='') insta=null;
-
     String email = _emailController.text;
     if(!AccountManager().isEmailValid(email))throw('E-mail non adeguata');
     String password = _passwordController.text;
     if(password=='')throw('Password è obbligatoria');
-    await AccountManager().signUp(email, password,User(name:name, surname: surname, cellNumber: phone, instagramNickname: insta));
+    await AccountManager().signUp(email, password,User(name:name, surname: surname, cellNumber: phone,gender: selectedGender, instagramNickname: insta));
   }
 
   void updateText(String newText) {
@@ -138,34 +138,58 @@ class _SignupFragmentState extends State<SignupFragment> {
                     ),
                   ),
 
-                  Wrap(
-                    children: [
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Radio(value: 0, groupValue: null, onChanged: null),
-                            Text('Maschio'),
-                          ],
-                        ),
+                Wrap(
+                  children: [
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Radio(
+                            value: Gender.MALE,
+                            groupValue: selectedGender,
+                            onChanged: (value) {
+                              setState(() {
+                                selectedGender = value!;
+                              });
+                            },
+                          ),
+                          Text('Maschio'),
+                        ],
                       ),
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Radio(value: 1, groupValue: null, onChanged: null),
-                            Text('Femmina'),
-                          ],
-                        ),
+                    ),
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Radio(
+                            value: Gender.FEMALE,
+                            groupValue: selectedGender,
+                            onChanged: (value) {
+                              setState(() {
+                                selectedGender = value!;
+                              });
+                            },
+                          ),
+                          Text('Femmina'),
+                        ],
                       ),
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Radio(value: 2, groupValue: null, onChanged: null),
-                            Text('Altro'),
-                          ],
-                        ),
+                    ),
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Radio(
+                            value: Gender.OTHER,
+                            groupValue: selectedGender,
+                            onChanged: (value) {
+                              setState(() {
+                                selectedGender = value!;
+                              });
+                            },
+                          ),
+                          Text('Altro'),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
+                ),
 
                   SizedBox(height: 20),
                   Text(
