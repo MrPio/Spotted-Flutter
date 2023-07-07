@@ -99,6 +99,7 @@ class _FirstPageState extends State<FirstPage> {
   }
 
   initialize() async {
+    Navigator.popUntil(context, (route) => route.isFirst);
     await DataManager().fetchData();
     if (await AccountManager().cacheLogin()) {
       Navigator.of(context).pushNamed("/main");

@@ -21,11 +21,6 @@ class _LoginFragmentState extends State<LoginFragment> {
     String email = _emailController.text;
     String password = _passwordController.text;
     await AccountManager().login(email, password);
-    Navigator.of(context).push(
-            MaterialPageRoute(
-            builder: (context) => const MainPage(),
-            ),
-        );
   }
 
   void updateText(String newText) {
@@ -67,8 +62,20 @@ class _LoginFragmentState extends State<LoginFragment> {
                   TextFormField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.fromLTRB(16, 12, 12, 12),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(
+                          color: Palette.darkBlack,
+                        ),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(
+                          color: Palette.darkBlack,
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -82,8 +89,20 @@ class _LoginFragmentState extends State<LoginFragment> {
                   TextFormField(
                     controller: _passwordController,
                     obscureText: true,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.fromLTRB(16, 12, 12, 12),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(
+                          color: Palette.darkBlack,
+                        ),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(
+                          color: Palette.darkBlack,
+                        ),
+                      ),
                     ),
                   ),
                   SizedBox(height: 10),
@@ -92,9 +111,15 @@ class _LoginFragmentState extends State<LoginFragment> {
                     style: TextStyle(color: Colors.red),
                   ),
                   ElevatedButton(
-                    onPressed: () async{
+                    onPressed: () async {
+                      errorText = '';
                       try {
                         await _login();
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const MainPage(),
+                          ),
+                        );
                       } catch (e) {
                         updateText(e.toString());
                       }

@@ -23,10 +23,11 @@ class AccountManager {
     try {
       final credential = await auth.FirebaseAuth.instance
           .signInWithEmailAndPassword(email: emailAddress, password: password);
-      IOManager().set_cache_data("uid", credential.user!.uid);
-      user = await DataManager().loadUser(credential.user?.uid);
+      await IOManager().set_cache_data("uid", credential.user!.uid);
+      user = await DataManager().loadUser(credential.user?.uid, force: true);
     } catch (e) {
-      throw ('Username o password errati');
+      //throw ('Username o password errati');
+      throw (e.toString());
     }
   }
 
@@ -38,21 +39,27 @@ class AccountManager {
         password: password,
       );
       newUser.uid = credential.user!.uid;
-      DataManager().save(newUser);
-      await login(email, password);
+      await IOManager().set_cache_data("uid", credential.user!.uid);
     } on auth.FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
+        throw('La password è troppo debole');
       } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+        throw('Account già esistente');
       }
     } catch (e) {
-      print(e);
+      throw(e.toString());
     }
+    await DataManager().save(newUser);
+    user=newUser;
   }
 
   Future<void> logout() async {
-    IOManager().remove_cache_data("uid");
-    await auth.FirebaseAuth.instance.signOut();
+    await IOManager().remove_cache_data("uid");
+    //await auth.FirebaseAuth.instance.signOut();
+  }
+
+  bool isEmailValid(String email) {
+    final emailRegex = RegExp(r'^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$');
+    return emailRegex.hasMatch(email);
   }
 }

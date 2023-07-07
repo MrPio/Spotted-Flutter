@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../../enums/palette.dart';
 import '../../managers/account_manager.dart';
 import '../../model/user.dart';
+import '../main_page.dart';
 
 class SignupFragment extends StatefulWidget {
   final void Function(int) setIndex;
@@ -35,7 +36,9 @@ class _SignupFragmentState extends State<SignupFragment> {
     if(insta=='') insta=null;
 
     String email = _emailController.text;
+    if(!AccountManager().isEmailValid(email))throw('E-mail non adeguata');
     String password = _passwordController.text;
+    if(password=='')throw('Password è obbligatoria');
     await AccountManager().signUp(email, password,User(name:name, surname: surname, cellNumber: phone, instagramNickname: insta));
   }
 
@@ -83,7 +86,19 @@ class _SignupFragmentState extends State<SignupFragment> {
                   TextFormField(
                     controller: _nameController,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(),
+                      contentPadding: EdgeInsets.fromLTRB(16, 12, 12, 12),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(
+                          color: Palette.darkBlack,
+                        ),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(
+                          color: Palette.darkBlack,
+                        ),
+                      ),
                       hintText: 'Nome',
                     ),
                   ),
@@ -98,7 +113,19 @@ class _SignupFragmentState extends State<SignupFragment> {
                   TextFormField(
                     controller: _surnameController,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(),
+                      contentPadding: EdgeInsets.fromLTRB(16, 12, 12, 12),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(
+                          color: Palette.darkBlack,
+                        ),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(
+                          color: Palette.darkBlack,
+                        ),
+                      ),
                       hintText: 'Cognome',
                     ),
                   ),
@@ -151,7 +178,19 @@ class _SignupFragmentState extends State<SignupFragment> {
                   TextFormField(
                     controller: _instaController,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(),
+                      contentPadding: EdgeInsets.fromLTRB(16, 12, 12, 12),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(
+                          color: Palette.darkBlack,
+                        ),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(
+                          color: Palette.darkBlack,
+                        ),
+                      ),
                       hintText: 'Instagram URL',
                     ),
                   ),
@@ -166,7 +205,19 @@ class _SignupFragmentState extends State<SignupFragment> {
                   TextFormField(
                     controller: _phoneController,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(),
+                      contentPadding: EdgeInsets.fromLTRB(16, 12, 12, 12),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(
+                          color: Palette.darkBlack,
+                        ),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(
+                          color: Palette.darkBlack,
+                        ),
+                      ),
                       hintText: 'Numero di telefono',
                     ),
                     keyboardType: TextInputType.phone,
@@ -187,9 +238,21 @@ class _SignupFragmentState extends State<SignupFragment> {
                   TextFormField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'E-mail',
-                      border: OutlineInputBorder(),
+                      contentPadding: EdgeInsets.fromLTRB(16, 12, 12, 12),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(
+                          color: Palette.darkBlack,
+                        ),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(
+                          color: Palette.darkBlack,
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -203,9 +266,21 @@ class _SignupFragmentState extends State<SignupFragment> {
                   TextFormField(
                     controller: _passwordController,
                     obscureText: true,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'Password',
-                      border: OutlineInputBorder(),
+                      contentPadding: EdgeInsets.fromLTRB(16, 12, 12, 12),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(
+                          color: Palette.darkBlack,
+                        ),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(
+                          color: Palette.darkBlack,
+                        ),
+                      ),
                     ),
                   ),
                   Text(
@@ -222,8 +297,17 @@ class _SignupFragmentState extends State<SignupFragment> {
                   SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: () async {
-                      await _signUp();
-                      Navigator.of(context).pushNamed("/main");
+                      errorText = '';
+                      try {
+                        await _signUp();
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const MainPage(),
+                          ),
+                        );
+                      }catch(e){
+                        updateText(e.toString());
+                      }
                     },
                     child: Text('Registrati'),
                     style: ElevatedButton.styleFrom(
