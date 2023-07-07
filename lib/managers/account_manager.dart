@@ -14,32 +14,51 @@ class AccountManager {
 
   Future<bool> cacheLogin() async {
     String? uid = await IOManager().get_cache_data("uid");
-    print("\n\n\n"+uid.toString());
-    if (uid==null) return false;
+    if (uid == null) return false;
     user = await DataManager().loadUser(uid, force: true);
     return true;
   }
 
-  Future<void> login(emailAddress,password ) async {
+  Future<void> login(emailAddress, password) async {
     try {
-      final credential = await auth.FirebaseAuth.instance.signInWithEmailAndPassword(
+      final credential = await auth.FirebaseAuth.instance
+          .signInWithEmailAndPassword(
           email: emailAddress,
           password: password
       );
-      IOManager().set_cache_data("uid", credential.user!.uid );
-      user = await DataManager().loadUser(credential.user?.uid, force: true);
-    } on auth.FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
-      }
+      IOManager().set_cache_data("uid", credential.user!.uid);
+      user = await DataManager().loadUser(credential.user?.uid);
+    } catch (e) {
+      throw ('Username o password errati');
     }
   }
 
-  Future<void> logout() async {
-    IOManager().remove_cache_data("uid");
-    await auth.FirebaseAuth.instance.signOut();
+
+Future<void> signUp(email, password, User newUser) async {
+  try {
+    final credential = await auth.FirebaseAuth.instance
+        .createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    newUser.uid = credential.user!.uid;
+    DataManager().save(newUser);
+    await login(email, password);
+  } on auth.FirebaseAuthException catch (e) {
+    if (e.code == 'weak-password') {
+      print('The password provided is too weak.');
+    } else if (e.code == 'email-already-in-use') {
+      print('The account already exists for that email.');
+    }
+  } catch (e) {
+    print(e);
   }
+}
+
+
+Future<void> logout() async {
+  IOManager().remove_cache_data("uid");
+  await auth.FirebaseAuth.instance.signOut();
+}
 
 }

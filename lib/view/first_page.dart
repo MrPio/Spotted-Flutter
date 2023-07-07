@@ -9,6 +9,7 @@ import 'package:spotted_flutter/view/partials/loading_view.dart';
 
 import '../enums/strings.dart';
 import 'fragments/login_fragment.dart';
+import 'fragments/signup_fragment.dart';
 
 class FirstPage extends StatefulWidget {
   const FirstPage({Key? key}) : super(key: key);
@@ -86,6 +87,8 @@ class _FirstPageState extends State<FirstPage> {
     _pages = [
       FirstFragment(setIndex: setFragmentIndex),
       LoginFragment(setIndex: setFragmentIndex),
+      SignupFragment(setIndex: setFragmentIndex),
+
     ];
 
     // Ensure the navigation to occur after the state is built
