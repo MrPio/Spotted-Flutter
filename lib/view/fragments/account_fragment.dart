@@ -18,6 +18,11 @@ class AccountFragment extends StatefulWidget {
 class _AccountFragmentState extends State<AccountFragment> {
   User user = AccountManager().user;
 
+  Future<void> _logout() async {
+    await AccountManager().logout();
+    Navigator.of(context).pushNamed("/");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -74,6 +79,18 @@ class _AccountFragmentState extends State<AccountFragment> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  ElevatedButton(
+                    onPressed: () async{
+                      _logout();
+                    },
+                    child: Text('Logout'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Palette.red,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(999),
+                      ),
+                    ),
+                  ),
                   Text(
                     '${user.posts.length}',
                     textAlign: TextAlign.center,

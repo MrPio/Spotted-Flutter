@@ -21,6 +21,11 @@ class _LoginFragmentState extends State<LoginFragment> {
     String email = _emailController.text;
     String password = _passwordController.text;
     await AccountManager().login(email, password);
+    Navigator.of(context).push(
+            MaterialPageRoute(
+            builder: (context) => const MainPage(),
+            ),
+        );
   }
 
   void updateText(String newText) {
@@ -90,14 +95,8 @@ class _LoginFragmentState extends State<LoginFragment> {
                     onPressed: () async{
                       try {
                         await _login();
-                        Navigator.of(context).push(
-                            MaterialPageRoute(
-                            builder: (context) => const MainPage(),
-                            ),
-                        );
                       } catch (e) {
                         updateText(e.toString());
-                        print(e.toString());
                       }
                     },
                     child: Text('Login'),

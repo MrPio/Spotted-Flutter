@@ -22,10 +22,7 @@ class AccountManager {
   Future<void> login(emailAddress, password) async {
     try {
       final credential = await auth.FirebaseAuth.instance
-          .signInWithEmailAndPassword(
-          email: emailAddress,
-          password: password
-      );
+          .signInWithEmailAndPassword(email: emailAddress, password: password);
       IOManager().set_cache_data("uid", credential.user!.uid);
       user = await DataManager().loadUser(credential.user?.uid);
     } catch (e) {
@@ -33,32 +30,29 @@ class AccountManager {
     }
   }
 
-
-Future<void> signUp(email, password, User newUser) async {
-  try {
-    final credential = await auth.FirebaseAuth.instance
-        .createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-    newUser.uid = credential.user!.uid;
-    DataManager().save(newUser);
-    await login(email, password);
-  } on auth.FirebaseAuthException catch (e) {
-    if (e.code == 'weak-password') {
-      print('The password provided is too weak.');
-    } else if (e.code == 'email-already-in-use') {
-      print('The account already exists for that email.');
+  Future<void> signUp(email, password, User newUser) async {
+    try {
+      final credential =
+          await auth.FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      newUser.uid = credential.user!.uid;
+      DataManager().save(newUser);
+      await login(email, password);
+    } on auth.FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
     }
-  } catch (e) {
-    print(e);
   }
-}
 
-
-Future<void> logout() async {
-  IOManager().remove_cache_data("uid");
-  await auth.FirebaseAuth.instance.signOut();
-}
-
+  Future<void> logout() async {
+    IOManager().remove_cache_data("uid");
+    await auth.FirebaseAuth.instance.signOut();
+  }
 }
