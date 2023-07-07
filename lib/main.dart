@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         splashColor: Colors.white.withAlpha(130),
         colorScheme: ColorScheme(
           brightness: brightness,
-          primary: isLight ? Palette.red : Palette.red,
+          primary: isLight ? Palette.red : Palette.white,
           onPrimary: isLight ? Palette.white : Palette.black,
           secondary: isLight ? Palette.white : Palette.black,
           onSecondary: isLight ? Palette.black : Palette.white,

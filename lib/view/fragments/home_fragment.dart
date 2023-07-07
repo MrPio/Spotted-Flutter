@@ -120,7 +120,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                     shrinkWrap: true,
                     itemCount: posts.length,
                     controller: _postsController,
-                    itemBuilder: (context, i) => SpotPost(post: posts[i]),
+                    itemBuilder: (context, i) => SpotPost(post: posts[i],refreshHomeCallback: reload),
                     padding: const EdgeInsets.only(bottom: 120),
                   ),
                 ),
@@ -143,7 +143,7 @@ class _HomeFragmentState extends State<HomeFragment> {
   loadMore() async {
     setState(() => posts = List.generate(10, (_) => null));
     await DataManager().loadMore();
-    await Future.delayed(Duration(milliseconds: 500));
+    await Future.delayed(Duration(milliseconds: 300));
     posts = DataManager().posts;
     setState(() => isLoading = false);
   }

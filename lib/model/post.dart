@@ -2,13 +2,14 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:spotted_flutter/enums/gender.dart';
 import 'package:spotted_flutter/enums/locations.dart';
 import 'package:spotted_flutter/enums/tags.dart';
+import 'package:spotted_flutter/interfaces/json_serializable.dart';
 import 'comment.dart';
 import 'user.dart';
 
 part 'post.g.dart';
 
 @JsonSerializable()
-class Post {
+class Post implements JSONSerializable{
   final String? authorUID;
   final Locations? location;
   final Gender gender;
@@ -19,10 +20,10 @@ class Post {
   final List<Comment> comments;
   final double? latitude;
   final double? longitude;
-  final bool anonymous;
+  bool anonymous;
   final bool spotted;
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(includeFromJson: true, includeToJson: false)
   String? uid;
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -79,4 +80,6 @@ class Post {
   }
 
   factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
+
+  Map<String, dynamic> toJSON() => _$PostToJson(this);
 }

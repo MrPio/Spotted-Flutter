@@ -1,6 +1,7 @@
 import 'package:spotted_flutter/enums/gender.dart';
 import 'package:spotted_flutter/enums/remote_images.dart';
 import 'package:spotted_flutter/enums/tags.dart';
+import 'package:spotted_flutter/interfaces/json_serializable.dart';
 import 'comment.dart';
 import 'post.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -8,7 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'user.g.dart';
 
 @JsonSerializable()
-class User {
+class User implements JSONSerializable{
   final String? name;
   final String? surname;
   final String avatar;
@@ -56,4 +57,6 @@ class User {
   get dateReg => DateTime.fromMillisecondsSinceEpoch(regDateTimestamp);
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+
+  Map<String, dynamic> toJSON() => _$UserToJson(this);
 }

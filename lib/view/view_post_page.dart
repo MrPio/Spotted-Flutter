@@ -7,6 +7,7 @@ import 'package:spotted_flutter/enums/locations.dart';
 import 'package:spotted_flutter/enums/palette.dart';
 import 'package:spotted_flutter/enums/remote_images.dart';
 import 'package:spotted_flutter/extension/function/date_time_extensions.dart';
+import 'package:spotted_flutter/managers/account_manager.dart';
 import 'package:spotted_flutter/managers/data_manager.dart';
 import 'package:spotted_flutter/model/post.dart';
 import 'package:spotted_flutter/model/user.dart';
@@ -64,107 +65,166 @@ class _ViewPostPageState extends State<ViewPostPage> {
                     Expanded(
                       child: SingleChildScrollView(
                         controller: contentController,
-                        padding: const EdgeInsets.only(top: 280, bottom: 210),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.vertical(top: Radius.circular(30)),
-                            color: Palette.scheme.onPrimary,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 30, vertical: 24),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  widget.post.location?.title ??
-                                      Locations.ANCONA.title,
-                                  style: Fonts.black(size: 30),
-                                ),
-                                Visibility(
-                                  visible: widget.post.spotted,
-                                  child: Text('(Persona spottata)',
-                                      style: Fonts.regular()),
-                                ),
-                                SizedBox(height: 20),
-                                Row(
+                        padding: const EdgeInsets.only(top: 250, bottom: 210),
+                        child: Stack(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(top: 30),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(30)),
+                                color: Palette.scheme.onPrimary,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 30, vertical: 24),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Container(
-                                      height: 34,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(999),
-                                          color: Palette.scheme.onPrimary,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.black
-                                                  .withOpacity(0.145),
-                                              offset: const Offset(0, 1),
-                                              blurRadius: 3,
-                                              spreadRadius: 0.3,
-                                            )
-                                          ]),
-                                      child: Material(
-                                        child: InkWell(
-                                          borderRadius:
-                                              BorderRadius.circular(999),
-                                          onTap: () {},
-                                          child: Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.symmetric(
-                                                    horizontal: 6, vertical: 2),
-                                            child: Row(
-                                              children: [
-                                                CachedNetworkImage(
-                                                    fit: BoxFit.fitHeight,
-                                                    imageUrl: widget.post.author
-                                                            ?.avatar ??
-                                                        RemoteImages
-                                                            .ANONYMOUS.url),
-                                                SizedBox(width: 12),
-                                                Text(
-                                                  '${widget.post.author?.name} ${widget.post.author?.surname}',
-                                                  style: Fonts.bold(size: 14),
+                                    Text(
+                                      widget.post.location?.title ??
+                                          Locations.ANCONA.title,
+                                      style: Fonts.black(size: 30),
+                                    ),
+                                    Visibility(
+                                      visible: widget.post.spotted,
+                                      child: Text('(Persona spottata)',
+                                          style: Fonts.regular()),
+                                    ),
+                                    SizedBox(height: 20),
+                                    Row(
+                                      children: [
+                                        Container(
+                                          height: 34,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(999),
+                                              color: Palette.scheme.onPrimary,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.black
+                                                      .withOpacity(0.145),
+                                                  offset: const Offset(0, 1),
+                                                  blurRadius: 3,
+                                                  spreadRadius: 0.3,
+                                                )
+                                              ]),
+                                          child: Material(
+                                            child: InkWell(
+                                              borderRadius:
+                                                  BorderRadius.circular(999),
+                                              onTap: () {},
+                                              child: Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .symmetric(
+                                                        horizontal: 6,
+                                                        vertical: 2),
+                                                child: Row(
+                                                  children: [
+                                                    CachedNetworkImage(
+                                                        fit: BoxFit.fitHeight,
+                                                        imageUrl: widget
+                                                                .post
+                                                                .author
+                                                                ?.avatar ??
+                                                            RemoteImages
+                                                                .ANONYMOUS.url),
+                                                    SizedBox(width: 12),
+                                                    Text(
+                                                      '${widget.post.author?.name} ${widget.post.author?.surname}',
+                                                      style:
+                                                          Fonts.bold(size: 14),
+                                                    ),
+                                                  ],
                                                 ),
-                                              ],
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
+                                        SizedBox(width: 10),
+                                        Text(
+                                          '- ${widget.post.date.toDateStr()}',
+                                          style: Fonts.regular(size: 16),
+                                        ),
+                                      ],
                                     ),
-                                    SizedBox(width: 10),
+                                    SizedBox(height: 10),
                                     Text(
-                                      '- ${widget.post.date.toDateStr()}',
-                                      style: Fonts.regular(size: 16),
+                                      '${widget.post.description}',
+                                      style: Fonts.light(size: 16),
                                     ),
+                                    SizedBox(height: 10),
+                                    GridView.builder(
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 3,
+                                        crossAxisSpacing: 8,
+                                        mainAxisSpacing: 8,
+                                        childAspectRatio: 3.3,
+                                      ),
+                                      itemCount: widget.post.tags.length,
+                                      itemBuilder: (_, i) =>
+                                          TagItem(tag: widget.post.tags[i]),
+                                    ),
+                                    SizedBox(height: 120)
                                   ],
                                 ),
-                                SizedBox(height: 10),
-                                Text(
-                                  '${widget.post.description}',
-                                  style: Fonts.light(size: 16),
-                                ),
-                                SizedBox(height: 10),
-                                GridView.builder(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 3,
-                                    crossAxisSpacing: 8,
-                                    mainAxisSpacing: 8,
-                                    childAspectRatio: 3.3,
-                                  ),
-                                  itemCount: widget.post.tags.length,
-                                  itemBuilder: (_, i) =>
-                                      TagItem(tag: widget.post.tags[i]),
-                                ),
-                                SizedBox(height: 120)
-                              ],
+                              ),
                             ),
-                          ),
+                            Align(
+                              alignment: AlignmentDirectional.topEnd,
+                              child: Container(
+                                margin: EdgeInsets.only(right: 40),
+                                padding: EdgeInsets.all(7),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(999),
+                                  color: Palette.scheme.onPrimary,
+                                ),
+                                height: 70,
+                                width: 70,
+                                child: Center(
+                                  child: Material(
+                                    borderRadius: BorderRadius.circular(999),
+                                    color: Palette.scheme.background,
+                                    clipBehavior: Clip.antiAlias,
+                                    child: IconButton(
+                                      icon: Icon(
+                                        widget.post.followers.contains(
+                                                AccountManager().user.uid)
+                                            ? Icons.bookmark_rounded
+                                            : Icons.bookmark_outline_rounded,
+                                        size: 29,
+                                      ),
+                                      onPressed: () async{
+                                        if (widget.post.followers.contains(
+                                            AccountManager().user.uid)) {
+                                          AccountManager()
+                                              .user
+                                              .following
+                                              .remove(widget.post.uid!);
+                                          widget.post.followers.remove(
+                                              AccountManager().user.uid!);
+                                        } else {
+                                          AccountManager()
+                                              .user
+                                              .following
+                                              .add(widget.post.uid!);
+                                          widget.post.followers
+                                              .add(AccountManager().user.uid!);
+                                        }
+                                        await DataManager().save(widget.post);
+                                        await DataManager().save(AccountManager().user);
+                                        await load();
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -288,6 +348,21 @@ class _ViewPostPageState extends State<ViewPostPage> {
                         ),
                       ),
                     ),
+
+                    // Percentage
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Palette.scheme.surface,
+                          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+                        ),
+                        // height: 40,
+                        padding: EdgeInsets.symmetric(horizontal: 30,vertical: 8),
+                        child: Text('${widget.post.calculateRelevance(AccountManager().user.tags)}%',
+                        style: Fonts.bold(color: Palette.white,size: 20),),
+                      ),
+                    ),
                   ],
                 ),
         ),
@@ -296,6 +371,8 @@ class _ViewPostPageState extends State<ViewPostPage> {
   }
 
   load() async {
+    setState(() => isLoading = true);
+
     // Carico l'autore del post
     widget.post.author = widget.post.anonymous
         ? User()
@@ -321,11 +398,17 @@ class _ViewPostPageState extends State<ViewPostPage> {
     contentController.addListener(() {
       setState(() {
         imageOpacity =
-            min(0.75, (400 - contentController.position.pixels) / 400);
+            max(0.75, (400 - contentController.position.pixels) / 400);
         imageScale =
             1.05 - 0.05 * min((contentController.position.pixels) / 200, 1);
       });
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    contentController.dispose();
+    super.dispose();
   }
 }

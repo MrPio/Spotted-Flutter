@@ -1,14 +1,13 @@
-import 'dart:ffi';
-
+import 'package:collection/collection.dart';
 import 'package:spotted_flutter/enums/tags.dart';
+import 'package:spotted_flutter/interfaces/json_serializable.dart';
 import 'package:spotted_flutter/managers/account_manager.dart';
 import 'package:spotted_flutter/managers/database_manager.dart';
 import 'package:spotted_flutter/model/post.dart';
 import 'package:spotted_flutter/model/setting_menu.dart';
 import 'package:spotted_flutter/model/user.dart';
-import 'package:collection/collection.dart';
 
-enum SaveMode { post, put }
+enum SaveMode { POST, PUT }
 
 class DataManager {
   static final DataManager _instance = DataManager._();
@@ -85,9 +84,9 @@ class DataManager {
     user.posts.clear();
     for (String postUID in user.postsUIDs.reversed.take(30)) {
       if (user.posts.firstWhereOrNull((post) => post.uid == postUID) == null) {
-        Post post =
-            Post.fromJson(await DatabaseManager().get('posts/$postUID'));
-        post.uid = postUID;
+        Post post = Post.fromJson(
+            (await DatabaseManager().get('posts/$postUID'))
+              ..addAll({'uid': postUID}));
         user.posts.add(post);
       }
     }
@@ -98,10 +97,37 @@ class DataManager {
     user.followingPosts.clear();
     for (String postUID in user.following.reversed.take(30)) {
       if (user.posts.firstWhereOrNull((post) => post.uid == postUID) == null) {
-        Post post =
-            Post.fromJson(await DatabaseManager().get('posts/$postUID'));
-        post.uid = postUID;
+        Post post = Post.fromJson(
+            (await DatabaseManager().get('posts/$postUID'))
+              ..addAll({'uid': postUID}));
         user.followingPosts.add(post);
+      }
+    }
+  }
+
+  // Save Model objects
+  save(Object model, [SaveMode mode = SaveMode.PUT]) async {
+    String path = model is User
+        ? "users/${mode == SaveMode.PUT ? model.uid : ''}"
+        : model is Post
+            ? "posts/${mode == SaveMode.PUT ? model.uid : ''}"
+            : '';
+    if (path == '') return;
+
+    // Query the FirebaseRD
+    if (mode == SaveMode.PUT && model is JSONSerializable) {
+      DatabaseManager().put(path, model.toJSON());
+    } else {
+      String? uid = await DatabaseManager().post(path, model);
+      if (uid != null) {
+        // Any operations to be performed with the retrieved uid
+        if (model is Post) {
+          // Add the newly created post to current user's posts list
+          posts.add(model);
+          AccountManager().user.postsUIDs.add(uid);
+          AccountManager().user.posts.add(model);
+          save(AccountManager().user);
+        }
       }
     }
   }

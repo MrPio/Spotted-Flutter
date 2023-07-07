@@ -41,7 +41,7 @@ class DatabaseManager {
       _database.ref(path).set(object);
 
   /// Push given object in a new child on the giving location. Returns the created key
-  Future<String?> push(String path, dynamic object) async {
+  Future<String?> post(String path, dynamic object) async {
     final node = _database.ref(path).push();
     await node.set(object);
     return node.key;

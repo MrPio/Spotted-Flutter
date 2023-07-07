@@ -13,9 +13,10 @@ import 'package:spotted_flutter/view/partials/highlight_view.dart';
 import 'package:spotted_flutter/view/partials/tag_item.dart';
 
 class SpotPost extends StatefulWidget {
-  const SpotPost({this.post, super.key});
+  const SpotPost({this.post, super.key, required this.refreshHomeCallback});
 
   final Post? post;
+  final Function() refreshHomeCallback;
 
   @override
   State<SpotPost> createState() => _SpotPostState();
@@ -88,7 +89,7 @@ class _SpotPostState extends State<SpotPost> {
             // HighlightView
             HighlightView(
                 onTap: () => Navigator.of(context)
-                    .pushNamed("/view_post", arguments: widget.post)),
+                    .pushNamed("/view_post", arguments: widget.post).then((value) => widget.refreshHomeCallback())),
 
             // Content
             Padding(

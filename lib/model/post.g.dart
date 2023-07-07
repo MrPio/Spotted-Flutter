@@ -25,6 +25,7 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
       longitude: (json['longitude'] as num?)?.toDouble(),
       anonymous: json['anonymous'] as bool? ?? false,
       spotted: json['spotted'] as bool? ?? false,
+      uid: json['uid'] as String?,
     );
 
 Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
