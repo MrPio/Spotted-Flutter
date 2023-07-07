@@ -90,9 +90,14 @@ class _LoginFragmentState extends State<LoginFragment> {
                     onPressed: () async{
                       try {
                         await _login();
-                        Navigator.of(context).pushNamed('/main');
+                        Navigator.of(context).push(
+                            MaterialPageRoute(
+                            builder: (context) => const MainPage(),
+                            ),
+                        );
                       } catch (e) {
                         updateText(e.toString());
+                        print(e.toString());
                       }
                     },
                     child: Text('Login'),

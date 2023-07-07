@@ -49,8 +49,8 @@ class MyApp extends StatelessWidget {
       title: 'Spotted!',
       theme: Palette.theme,
       routes: <String, WidgetBuilder>{
-        '/': ( context) => const FirstPage(),
-        '/main': ( context) => const MainPage(),
+        '/': ( context) => FirstPage(),
+        '/main': ( context) => MainPage(),
         '/view_post': ( context) => ViewPostPage((ModalRoute.of(context)?.settings.arguments ??Post()) as Post),
       },
     );

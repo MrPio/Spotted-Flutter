@@ -21,6 +21,7 @@ class _SignupFragmentState extends State<SignupFragment> {
   final TextEditingController _instaController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  String errorText = '';
 
   Future<void> _signUp() async {
     String name = _nameController.text;
@@ -37,6 +38,13 @@ class _SignupFragmentState extends State<SignupFragment> {
     String password = _passwordController.text;
     await AccountManager().signUp(email, password,User(name:name, surname: surname, cellNumber: phone, instagramNickname: insta));
   }
+
+  void updateText(String newText) {
+    setState(() {
+      errorText = newText;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -205,6 +213,11 @@ class _SignupFragmentState extends State<SignupFragment> {
                     style: TextStyle(
                       fontSize: 16,
                     ),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    errorText,
+                    style: TextStyle(color: Colors.red),
                   ),
                   SizedBox(height: 10),
                   ElevatedButton(
