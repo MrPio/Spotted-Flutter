@@ -11,6 +11,7 @@ import 'package:spotted_flutter/managers/account_manager.dart';
 import 'package:spotted_flutter/managers/data_manager.dart';
 import 'package:spotted_flutter/model/post.dart';
 import 'package:spotted_flutter/model/user.dart';
+import 'package:spotted_flutter/view/partials/back_icon.dart';
 import 'package:spotted_flutter/view/partials/loading_view.dart';
 import 'package:spotted_flutter/view/partials/tag_item.dart';
 
@@ -46,17 +47,34 @@ class _ViewPostPageState extends State<ViewPostPage> {
                       child: ClipRRect(
                         borderRadius:
                             BorderRadius.vertical(top: Radius.circular(30)),
-                        child: Opacity(
-                          opacity: imageOpacity,
-                          child: Transform.scale(
-                            scale: imageScale,
-                            child: CachedNetworkImage(
-                              fit: BoxFit.fitHeight,
-                              imageUrl:
-                                  (widget.post.location ?? Locations.ANCONA)
-                                      .imageUrl,
+                        child: Stack(
+                          children: [
+                            Opacity(
+                              opacity: imageOpacity,
+                              child: Transform.scale(
+                                scale: imageScale,
+                                child: CachedNetworkImage(
+                                  fit: BoxFit.fitHeight,
+                                  imageUrl:
+                                      (widget.post.location ?? Locations.ANCONA)
+                                          .imageUrl,
+                                ),
+                              ),
                             ),
-                          ),
+                            Container(color: Palette.white.withOpacity(widget.post.spotted ? 0.35 :0)),
+                            Visibility(
+                              visible: widget.post.spotted,
+                              child: Center(
+                                child: Transform.rotate(
+                                  angle: -pi / 12,
+                                  child: Text(
+                                    'Spotted!',
+                                    style: Fonts.black(color: Palette.white, size: 44),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
                         ),
                       ),
                     ),
@@ -114,7 +132,19 @@ class _ViewPostPageState extends State<ViewPostPage> {
                                             child: InkWell(
                                               borderRadius:
                                                   BorderRadius.circular(999),
-                                              onTap: () {},
+                                              onTap: () {
+                                                if (widget.post.author !=
+                                                        null &&
+                                                    !widget.post.anonymous &&
+                                                    widget.post.authorUID !=
+                                                        AccountManager()
+                                                            .user
+                                                            .uid)
+                                                  Navigator.of(context)
+                                                      .pushNamed('/account',
+                                                          arguments: widget
+                                                              .post.author);
+                                              },
                                               child: Padding(
                                                 padding: EdgeInsetsDirectional
                                                     .symmetric(
@@ -198,7 +228,7 @@ class _ViewPostPageState extends State<ViewPostPage> {
                                             : Icons.bookmark_outline_rounded,
                                         size: 29,
                                       ),
-                                      onPressed: () async{
+                                      onPressed: () async {
                                         if (widget.post.followers.contains(
                                             AccountManager().user.uid)) {
                                           AccountManager()
@@ -216,7 +246,8 @@ class _ViewPostPageState extends State<ViewPostPage> {
                                               .add(AccountManager().user.uid!);
                                         }
                                         await DataManager().save(widget.post);
-                                        await DataManager().save(AccountManager().user);
+                                        await DataManager()
+                                            .save(AccountManager().user);
                                         await load();
                                       },
                                     ),
@@ -326,28 +357,7 @@ class _ViewPostPageState extends State<ViewPostPage> {
                     ),
 
                     // Back icon
-                    Container(
-                      width: 50,
-                      height: 50,
-                      margin: EdgeInsetsDirectional.only(start: 24, top: 20),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(999),
-                        color: Palette.white.withOpacity(0.5),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(999),
-                        child: Center(
-                          child: Material(
-                            color: Colors.transparent,
-                            child: IconButton(
-                              icon: Icon(Icons.chevron_left_rounded,
-                                  color: Palette.black),
-                              onPressed: () => Navigator.pop(context),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    BackIcon(),
 
                     // Percentage
                     Align(
@@ -355,12 +365,16 @@ class _ViewPostPageState extends State<ViewPostPage> {
                       child: Container(
                         decoration: BoxDecoration(
                           color: Palette.scheme.surface,
-                          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+                          borderRadius: BorderRadius.vertical(
+                              bottom: Radius.circular(20)),
                         ),
                         // height: 40,
-                        padding: EdgeInsets.symmetric(horizontal: 30,vertical: 8),
-                        child: Text('${widget.post.calculateRelevance(AccountManager().user.tags)}%',
-                        style: Fonts.bold(color: Palette.white,size: 20),),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 30, vertical: 8),
+                        child: Text(
+                          '${widget.post.calculateRelevance(AccountManager().user.tags)}%',
+                          style: Fonts.bold(color: Palette.white, size: 20),
+                        ),
                       ),
                     ),
                   ],

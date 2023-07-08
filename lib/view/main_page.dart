@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:spotted_flutter/managers/account_manager.dart';
 import 'package:spotted_flutter/view/partials/bottom_bar_icon.dart';
 
 import '../enums/palette.dart';
@@ -15,10 +16,13 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  int _currentIndex = 2;
+  int _currentIndex = 0;
   double _offsetY = 0;
 
-  changeIndex(int index) => setState(() => _currentIndex = index);
+  changeIndex(int index) {
+    changeBottomBarOffsetY(0);
+    setState(() => _currentIndex = index);
+  }
 
   changeBottomBarOffsetY(double offsetY) => setState(() => _offsetY = offsetY);
 
@@ -27,7 +31,7 @@ class _MainPageState extends State<MainPage> {
     final List<Widget> pages = [
       HomeFragment(changeIndex),
       AddPostFragment(changeIndex,changeBottomBarOffsetY),
-      AccountFragment(changeIndex),
+      AccountFragment(changeIndex,changeBottomBarOffsetY, user: AccountManager().user,),
       SettingsFragment(changeIndex),
     ];
     return Scaffold(
@@ -66,22 +70,22 @@ class _MainPageState extends State<MainPage> {
                         BottomBarIcon(
                           icon: Icons.home_outlined,
                           active: _currentIndex == 0,
-                          onTap: () => setState(() => _currentIndex = 0),
+                          onTap: () => changeIndex(0),
                         ),
                         BottomBarIcon(
                           icon: Icons.add_circle_outline,
                           active: _currentIndex == 1,
-                          onTap: () => setState(() => _currentIndex = 1),
+                          onTap: () => changeIndex(1),
                         ),
                         BottomBarIcon(
                           icon: Icons.person_outline,
                           active: _currentIndex == 2,
-                          onTap: () => setState(() => _currentIndex = 2),
+                          onTap: () => changeIndex(2),
                         ),
                         // BottomBarIcon(
                         //   icon: Icons.settings_outlined,
                         //   active: _currentIndex == 3,
-                        //   onTap: () => setState(() => _currentIndex = 3),
+                        //   onTap: () => changeIndex(3),
                         // ),
                       ],
                     ),

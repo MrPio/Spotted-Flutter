@@ -9,7 +9,9 @@ class Comment {
 
   final String? authorUID;
   final String text;
-  final DateTime date;
+  final int timestamp;
+
+  DateTime get date => DateTime.fromMillisecondsSinceEpoch(timestamp);
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   User? user;
@@ -17,9 +19,9 @@ class Comment {
   Comment({
     this.authorUID,
     this.text = "",
-    DateTime? date,
+    this.timestamp=0,
     this.user,
-  }) : date = date ?? DateTime.now();
+  });
 
   factory Comment.fromJson(Map<String, dynamic> json) =>
       _$CommentFromJson(json);

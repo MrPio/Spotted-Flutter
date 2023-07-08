@@ -5,9 +5,12 @@ import 'package:flutter/services.dart';
 import 'package:spotted_flutter/enums/palette.dart';
 import 'package:spotted_flutter/managers/data_manager.dart';
 import 'package:spotted_flutter/model/post.dart';
+import 'package:spotted_flutter/model/user.dart';
 import 'package:spotted_flutter/view/first_page.dart';
 import 'package:spotted_flutter/view/main_page.dart';
 import 'package:spotted_flutter/view/view_post_page.dart';
+
+import 'view/account_page.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -51,7 +54,7 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(
-            textScaleFactor: MediaQuery.of(context).textScaleFactor*0.96,
+            textScaleFactor: MediaQuery.of(context).textScaleFactor*1//0.96,
           ),
           child: child!,
         );
@@ -60,6 +63,7 @@ class MyApp extends StatelessWidget {
         '/': ( context) => FirstPage(),
         '/main': ( context) => MainPage(),
         '/view_post': ( context) => ViewPostPage((ModalRoute.of(context)?.settings.arguments ??Post()) as Post),
+        '/account': ( context) => AccountPage((ModalRoute.of(context)?.settings.arguments ??User()) as User),
       },
     );
   }
