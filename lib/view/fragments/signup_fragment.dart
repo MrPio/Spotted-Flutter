@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:spotted_flutter/view/partials/rounded_button.dart';
 
 import '../../enums/gender.dart';
 import '../../enums/palette.dart';
@@ -23,23 +24,31 @@ class _SignupFragmentState extends State<SignupFragment> {
   final TextEditingController _instaController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  Gender? selectedGender=null;
+  Gender? selectedGender = null;
   String errorText = '';
 
   Future<void> _signUp() async {
     String name = _nameController.text;
-    if(name=='')throw('Nome è obbligatorio');
+    if (name == '') throw ('Nome è obbligatorio');
     String surname = _surnameController.text;
-    if(surname=='')throw('Cognome è obbligatorio');
+    if (surname == '') throw ('Cognome è obbligatorio');
     String? phone = _phoneController.text;
-    if(phone=='') phone=null;
+    if (phone == '') phone = null;
     String? insta = _instaController.text;
-    if(insta=='') insta=null;
+    if (insta == '') insta = null;
     String email = _emailController.text;
-    if(!AccountManager().isEmailValid(email))throw('E-mail non adeguata');
+    if (!AccountManager().isEmailValid(email)) throw ('E-mail non adeguata');
     String password = _passwordController.text;
-    if(password=='')throw('Password è obbligatoria');
-    await AccountManager().signUp(email, password,User(name:name, surname: surname, cellNumber: phone,gender: selectedGender, instagramNickname: insta));
+    if (password == '') throw ('Password è obbligatoria');
+    await AccountManager().signUp(
+        email,
+        password,
+        User(
+            name: name,
+            surname: surname,
+            cellNumber: phone,
+            gender: selectedGender,
+            instagramNickname: insta));
   }
 
   void updateText(String newText) {
@@ -137,63 +146,61 @@ class _SignupFragmentState extends State<SignupFragment> {
                       fontSize: 16,
                     ),
                   ),
-
-                Wrap(
-                  children: [
-                    Expanded(
-                      child: Row(
-                        children: [
-                          Radio(
-                            value: Gender.MALE,
-                            groupValue: selectedGender,
-                            onChanged: (value) {
-                              setState(() {
-                                selectedGender = value!;
-                              });
-                            },
-                          ),
-                          Text('Maschio'),
-                        ],
+                  Wrap(
+                    children: [
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Radio(
+                              value: Gender.MALE,
+                              groupValue: selectedGender,
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedGender = value!;
+                                });
+                              },
+                            ),
+                            Text('Maschio'),
+                          ],
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: Row(
-                        children: [
-                          Radio(
-                            value: Gender.FEMALE,
-                            groupValue: selectedGender,
-                            onChanged: (value) {
-                              setState(() {
-                                selectedGender = value!;
-                              });
-                            },
-                          ),
-                          Text('Femmina'),
-                        ],
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Radio(
+                              value: Gender.FEMALE,
+                              groupValue: selectedGender,
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedGender = value!;
+                                });
+                              },
+                            ),
+                            Text('Femmina'),
+                          ],
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: Row(
-                        children: [
-                          Radio(
-                            value: Gender.OTHER,
-                            groupValue: selectedGender,
-                            onChanged: (value) {
-                              setState(() {
-                                selectedGender = value!;
-                              });
-                            },
-                          ),
-                          Text('Altro'),
-                        ],
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Radio(
+                              value: Gender.OTHER,
+                              groupValue: selectedGender,
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedGender = value!;
+                                });
+                              },
+                            ),
+                            Text('Altro'),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-
+                    ],
+                  ),
                   SizedBox(height: 20),
                   Text(
-                    '*Instagram URL:',
+                    '*instagram nickname:',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
@@ -215,7 +222,7 @@ class _SignupFragmentState extends State<SignupFragment> {
                           color: Palette.darkBlack,
                         ),
                       ),
-                      hintText: 'Instagram URL',
+                      hintText: 'instagram nickname',
                     ),
                   ),
                   SizedBox(height: 20),
@@ -318,29 +325,16 @@ class _SignupFragmentState extends State<SignupFragment> {
                     errorText,
                     style: TextStyle(color: Colors.red),
                   ),
-                  SizedBox(height: 10),
-                  ElevatedButton(
-                    onPressed: () async {
-                      errorText = '';
-                      try {
-                        await _signUp();
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const MainPage(),
-                          ),
-                        );
-                      }catch(e){
-                        updateText(e.toString());
-                      }
-                    },
-                    child: Text('Registrati'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Palette.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(999),
-                      ),
-                    ),
-                  ),
+                  SizedBox(height: 20),
+                  RoundedButton('REGISTRATI', onTap: () async {
+                    errorText = '';
+                    try {
+                      await _signUp();
+                      Navigator.of(context).popAndPushNamed("/main");
+                    } catch (e) {
+                      updateText(e.toString());
+                    }
+                  }),
                   Divider(),
                   SizedBox(height: 16),
                   const Text(

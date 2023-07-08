@@ -33,8 +33,7 @@ class _FirstPageState extends State<FirstPage> {
   @override
   Widget build(BuildContext context) {
     const _PATH = "assets/images/";
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         body: Stack(
           fit: StackFit.expand,
           children: [
@@ -76,8 +75,7 @@ class _FirstPageState extends State<FirstPage> {
             LoadingView(visible: isLoading)
           ],
         ),
-      ),
-    );
+      );
   }
 
   @override
@@ -102,7 +100,7 @@ class _FirstPageState extends State<FirstPage> {
     Navigator.popUntil(context, (route) => route.isFirst);
     await DataManager().fetchData();
     if (await AccountManager().cacheLogin()) {
-      Navigator.of(context).pushNamed("/main");
+      Navigator.of(context).popAndPushNamed("/main");
     }
     setState(() => isLoading = false);
   }

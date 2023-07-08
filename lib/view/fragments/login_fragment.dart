@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:spotted_flutter/view/partials/rounded_button.dart';
 import '../../enums/palette.dart';
 import '../../managers/account_manager.dart';
 import '../main_page.dart';
@@ -110,28 +111,17 @@ class _LoginFragmentState extends State<LoginFragment> {
                     errorText,
                     style: TextStyle(color: Colors.red),
                   ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      errorText = '';
-                      try {
-                        await _login();
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const MainPage(),
-                          ),
-                        );
-                      } catch (e) {
-                        updateText(e.toString());
-                      }
-                    },
-                    child: Text('Login'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Palette.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(999),
-                      ),
-                    ),
-                  ),
+                  SizedBox(height: 20),
+                  RoundedButton('LOGIN', onTap: ()async{
+                    errorText = '';
+                    try {
+                      await _login();
+                      Navigator.of(context).popAndPushNamed("/main");
+                    } catch (e) {
+                      updateText(e.toString());
+                    }
+                  }),
+                  SizedBox(height: 10),
                   Divider(),
                   SizedBox(height: 16),
                   const Text(
