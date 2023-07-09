@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
+// Dart
 enum Tags {
+
+  // Height
   ALTO(Icons.height),
   BASSO(Icons.height),
 
