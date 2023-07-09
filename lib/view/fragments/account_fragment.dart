@@ -183,7 +183,7 @@ class _AccountFragmentState extends State<AccountFragment> {
                     SizedBox(height: 24),
                     Container(
                       decoration: BoxDecoration(
-                        color: Colors.white, // Replace with your desired color
+                        color: Palette.scheme.secondary, // Replace with your desired color
                         borderRadius: BorderRadius.vertical(
                           top: Radius.circular(30),
                         ),
