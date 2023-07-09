@@ -80,7 +80,7 @@ class _SignupFragmentState extends State<SignupFragment> {
                       fontFamily: 'lato_bold',
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: Palette.scheme.onSecondary,
                     ),
                   ),
                   SizedBox(height: 4),
@@ -148,53 +148,47 @@ class _SignupFragmentState extends State<SignupFragment> {
                   ),
                   Wrap(
                     children: [
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Radio(
-                              value: Gender.MALE,
-                              groupValue: selectedGender,
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedGender = value!;
-                                });
-                              },
-                            ),
-                            Text('Maschio'),
-                          ],
-                        ),
+                      Row(
+                        children: [
+                          Radio(
+                            value: Gender.MALE,
+                            groupValue: selectedGender,
+                            onChanged: (value) {
+                              setState(() {
+                                selectedGender = value!;
+                              });
+                            },
+                          ),
+                          Text('Maschio'),
+                        ],
                       ),
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Radio(
-                              value: Gender.FEMALE,
-                              groupValue: selectedGender,
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedGender = value!;
-                                });
-                              },
-                            ),
-                            Text('Femmina'),
-                          ],
-                        ),
+                      Row(
+                        children: [
+                          Radio(
+                            value: Gender.FEMALE,
+                            groupValue: selectedGender,
+                            onChanged: (value) {
+                              setState(() {
+                                selectedGender = value!;
+                              });
+                            },
+                          ),
+                          Text('Femmina'),
+                        ],
                       ),
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Radio(
-                              value: Gender.OTHER,
-                              groupValue: selectedGender,
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedGender = value!;
-                                });
-                              },
-                            ),
-                            Text('Altro'),
-                          ],
-                        ),
+                      Row(
+                        children: [
+                          Radio(
+                            value: Gender.OTHER,
+                            groupValue: selectedGender,
+                            onChanged: (value) {
+                              setState(() {
+                                selectedGender = value!;
+                              });
+                            },
+                          ),
+                          Text('Altro'),
+                        ],
                       ),
                     ],
                   ),
