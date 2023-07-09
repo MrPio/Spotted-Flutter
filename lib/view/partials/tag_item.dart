@@ -33,20 +33,23 @@ class _TagItemState extends State<TagItem> {
             onTap: widget.onTap??(){},
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                children: [
-                  Icon(
-                    widget.tag.icon,
-                    color:  widget.selected? Palette.white:Palette.scheme.onSecondary,
-                    size: 20,
-                  ),
-                  SizedBox(width: 4),
-                  Text(
-                    widget.tag.title,
-                    style: Fonts.regular(color: widget.selected? Palette.white:Palette.scheme.onSecondary),
-                    overflow: TextOverflow.fade,
-                  )
-                ],
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    Icon(
+                      widget.tag.icon,
+                      color:  widget.selected? Palette.white:Palette.scheme.onSecondary,
+                      size: 20,
+                    ),
+                    SizedBox(width: 4),
+                    Text(
+                      widget.tag.title,
+                      style: Fonts.regular(color: widget.selected? Palette.white:Palette.scheme.onSecondary),
+                      overflow: TextOverflow.fade,
+                    )
+                  ],
+                ),
               ),
             ),
           ),

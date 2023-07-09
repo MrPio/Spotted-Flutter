@@ -69,226 +69,225 @@ class _AddPostFragmentState extends State<AddPostFragment> {
                     ),
 
                     // Scroll view
-                    Expanded(
-                      child: SingleChildScrollView(
-                        controller: contentController,
-                        padding: const EdgeInsets.only(top: 250, bottom: 0),
-                        child: Container(
-                          margin: EdgeInsets.only(top: 30),
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.vertical(top: Radius.circular(30)),
-                            color: Palette.scheme.onPrimary,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 30, vertical: 24),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                // ANONYMOUS
-                                Text(
-                                  'Autore del post',
-                                  style: Fonts.bold(
-                                      color: Palette.scheme.primary, size: 20),
+                    SingleChildScrollView(
+                      controller: contentController,
+                      padding: const EdgeInsets.only(top: 250, bottom: 0),
+
+                      child: Container(
+                        margin: EdgeInsets.only(top: 30),
+                        decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.vertical(top: Radius.circular(30)),
+                          color: Palette.scheme.onPrimary,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 24),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // ANONYMOUS
+                              Text(
+                                'Autore del post',
+                                style: Fonts.bold(
+                                    color: Palette.scheme.primary, size: 20),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 8),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Modalità anonima:',
+                                      style: Fonts.regular(size: 16),
+                                    ),
+                                    Checkbox(
+                                        fillColor:
+                                            MaterialStateProperty.resolveWith(
+                                                (_) => Palette
+                                                    .scheme.onSecondary),
+                                        value: post.anonymous,
+                                        onChanged: (_) => setState(() => post
+                                            .anonymous = !post.anonymous)),
+                                  ],
                                 ),
-                                Padding(
+                              ),
+
+                              // HLine
+                              Container(
+                                  height: 1.2,
+                                  width: double.infinity,
+                                  color: Palette.scheme.onSecondary
+                                      .withOpacity(0.1)),
+
+                              // ZONA
+                              Padding(
+                                padding: const EdgeInsets.only(top: 20),
+                                child: Text(
+                                  'Zona',
+                                  style: Fonts.bold(
+                                      color: Palette.scheme.primary,
+                                      size: 20),
+                                ),
+                              ),
+                              SizedBox(
+                                width: double.infinity,
+                                child: DropdownButton(
+                                  underline: Container(),
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 8),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'Modalità anonima:',
-                                        style: Fonts.regular(size: 16),
-                                      ),
-                                      Checkbox(
-                                          fillColor:
-                                              MaterialStateProperty.resolveWith(
-                                                  (_) => Palette
-                                                      .scheme.onSecondary),
-                                          value: post.anonymous,
-                                          onChanged: (_) => setState(() => post
-                                              .anonymous = !post.anonymous)),
-                                    ],
-                                  ),
-                                ),
-
-                                // HLine
-                                Container(
-                                    height: 1.2,
-                                    width: double.infinity,
-                                    color: Palette.scheme.onSecondary
-                                        .withOpacity(0.1)),
-
-                                // ZONA
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 20),
-                                  child: Text(
-                                    'Zona',
-                                    style: Fonts.bold(
-                                        color: Palette.scheme.primary,
-                                        size: 20),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: DropdownButton(
-                                    underline: Container(),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 8),
-                                    style: Fonts.regular(size: 16),
-                                    value: post.location!.name,
-                                    items: Locations.values
-                                        .map((e) => DropdownMenuItem<String>(
-                                              value: e.name,
-                                              child: Text(e.title),
-                                            ))
-                                        .toList(),
-                                    onChanged: (value) => setState(() =>
-                                        post.location = Locations.values
-                                            .firstWhere(
-                                                (e) => e.name == value)),
-                                  ),
-                                ),
-
-                                // HLine
-                                Container(
-                                    height: 1.2,
-                                    width: double.infinity,
-                                    color: Palette.scheme.onSecondary
-                                        .withOpacity(0.1)),
-
-                                // GENDER
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 20),
-                                  child: Text(
-                                    'Genere',
-                                    style: Fonts.bold(
-                                        color: Palette.scheme.primary,
-                                        size: 20),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: DropdownButton(
-                                    underline: Container(),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 8),
-                                    style: Fonts.regular(size: 16),
-                                    value: post.gender.name,
-                                    items: Gender.values
-                                        .map((e) => DropdownMenuItem<String>(
-                                              value: e.name,
-                                              child: Row(
-                                                children: [
-                                                  Icon(e.icon),
-                                                  SizedBox(width: 10),
-                                                  Text(e.title)
-                                                ],
-                                              ),
-                                            ))
-                                        .toList(),
-                                    onChanged: (value) => setState(() =>
-                                        post.gender = Gender.values.firstWhere(
-                                            (e) => e.name == value)),
-                                  ),
-                                ),
-
-                                // HLine
-                                Container(
-                                    height: 1.2,
-                                    width: double.infinity,
-                                    color: Palette.scheme.onSecondary
-                                        .withOpacity(0.1)),
-
-                                // TAGS
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 20),
-                                  child: Text(
-                                    'Tags',
-                                    style: Fonts.bold(
-                                        color: Palette.scheme.primary,
-                                        size: 20),
-                                  ),
-                                ),
-                                SizedBox(height: 20),
-                                Text(
-                                  'Scegli almeno 3 dei seguenti tags:',
                                   style: Fonts.regular(size: 16),
+                                  value: post.location!.name,
+                                  items: Locations.values
+                                      .map((e) => DropdownMenuItem<String>(
+                                            value: e.name,
+                                            child: Text(e.title),
+                                          ))
+                                      .toList(),
+                                  onChanged: (value) => setState(() =>
+                                      post.location = Locations.values
+                                          .firstWhere(
+                                              (e) => e.name == value)),
                                 ),
-                                SizedBox(height: 20),
-                                GridView.builder(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 3,
-                                    crossAxisSpacing: 8,
-                                    mainAxisSpacing: 8,
-                                    childAspectRatio: 2.8,
-                                  ),
-                                  itemCount: Tags.values.length,
-                                  itemBuilder: (_, i) {
-                                    final tag = Tags.values[i];
-                                    return TagItem(
-                                      tag: tag,
-                                      selected: post.tags.contains(tag),
-                                      onTap: () =>
-                                          setState(() => post.tags.toggle(tag)),
-                                    );
-                                  },
-                                ),
-                                SizedBox(height: 20),
+                              ),
 
-                                // HLine
-                                Container(
-                                    height: 1.2,
-                                    width: double.infinity,
-                                    color: Palette.scheme.onSecondary
-                                        .withOpacity(0.1)),
+                              // HLine
+                              Container(
+                                  height: 1.2,
+                                  width: double.infinity,
+                                  color: Palette.scheme.onSecondary
+                                      .withOpacity(0.1)),
 
-                                // DESCRIZIONE
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 20),
-                                  child: Text(
-                                    'Descrizione',
-                                    style: Fonts.bold(
-                                        color: Palette.scheme.primary,
-                                        size: 20),
-                                  ),
+                              // GENDER
+                              Padding(
+                                padding: const EdgeInsets.only(top: 20),
+                                child: Text(
+                                  'Genere',
+                                  style: Fonts.bold(
+                                      color: Palette.scheme.primary,
+                                      size: 20),
                                 ),
-                                TextField(
+                              ),
+                              SizedBox(
+                                width: double.infinity,
+                                child: DropdownButton(
+                                  underline: Container(),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 8),
                                   style: Fonts.regular(size: 16),
-                                  maxLines: 3,
-                                  onChanged: (value) =>
-                                      setState(() => post.description = value),
-                                  decoration: InputDecoration(
-                                    hintText: 'Indossava una felpa nera',
-                                  ),
+                                  value: post.gender.name,
+                                  items: Gender.values
+                                      .map((e) => DropdownMenuItem<String>(
+                                            value: e.name,
+                                            child: Row(
+                                              children: [
+                                                Icon(e.icon),
+                                                SizedBox(width: 10),
+                                                Text(e.title)
+                                              ],
+                                            ),
+                                          ))
+                                      .toList(),
+                                  onChanged: (value) => setState(() =>
+                                      post.gender = Gender.values.firstWhere(
+                                          (e) => e.name == value)),
                                 ),
+                              ),
 
-                                // HLine
-                                Container(
-                                    height: 1.2,
-                                    width: double.infinity,
-                                    color: Palette.scheme.onSecondary
-                                        .withOpacity(0.1)),
+                              // HLine
+                              Container(
+                                  height: 1.2,
+                                  width: double.infinity,
+                                  color: Palette.scheme.onSecondary
+                                      .withOpacity(0.1)),
 
-                                // ERRORS
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 20),
-                                  child: Text(
-                                    errors,
-                                    style: Fonts.bold(size: 16),
-                                  ),
+                              // TAGS
+                              Padding(
+                                padding: const EdgeInsets.only(top: 20),
+                                child: Text(
+                                  'Tags',
+                                  style: Fonts.bold(
+                                      color: Palette.scheme.primary,
+                                      size: 20),
                                 ),
+                              ),
+                              SizedBox(height: 20),
+                              Text(
+                                'Scegli almeno 3 dei seguenti tags:',
+                                style: Fonts.regular(size: 16),
+                              ),
+                              SizedBox(height: 20),
+                              GridView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  crossAxisSpacing: 8,
+                                  mainAxisSpacing: 8,
+                                  childAspectRatio: 2.8,
+                                ),
+                                itemCount: Tags.values.length,
+                                itemBuilder: (_, i) {
+                                  final tag = Tags.values[i];
+                                  return TagItem(
+                                    tag: tag,
+                                    selected: post.tags.contains(tag),
+                                    onTap: () =>
+                                        setState(() => post.tags.toggle(tag)),
+                                  );
+                                },
+                              ),
+                              SizedBox(height: 20),
 
-                                SizedBox(height: 100),
-                              ],
-                            ),
+                              // HLine
+                              Container(
+                                  height: 1.2,
+                                  width: double.infinity,
+                                  color: Palette.scheme.onSecondary
+                                      .withOpacity(0.1)),
+
+                              // DESCRIZIONE
+                              Padding(
+                                padding: const EdgeInsets.only(top: 20),
+                                child: Text(
+                                  'Descrizione',
+                                  style: Fonts.bold(
+                                      color: Palette.scheme.primary,
+                                      size: 20),
+                                ),
+                              ),
+                              TextField(
+                                style: Fonts.regular(size: 16),
+                                maxLines: 3,
+                                onChanged: (value) =>
+                                    setState(() => post.description = value),
+                                decoration: InputDecoration(
+                                  hintText: 'Indossava una felpa nera',
+                                ),
+                              ),
+
+                              // HLine
+                              Container(
+                                  height: 1.2,
+                                  width: double.infinity,
+                                  color: Palette.scheme.onSecondary
+                                      .withOpacity(0.1)),
+
+                              // ERRORS
+                              Padding(
+                                padding: const EdgeInsets.only(top: 20),
+                                child: Text(
+                                  errors,
+                                  style: Fonts.bold(size: 16),
+                                ),
+                              ),
+
+                              SizedBox(height: 100),
+                            ],
                           ),
                         ),
                       ),
